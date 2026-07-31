@@ -1,0 +1,33 @@
+---
+import { waLink } from '../config';
+import Heart from './Heart.astro';
+---
+
+<section class="relative overflow-hidden bg-brand">
+  <!-- Corazones decorativos sutiles -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <Heart size={160} color="#DD2530" class="absolute -left-10 -top-10 opacity-[0.08]" />
+    <Heart size={100} color="#ffffff" class="absolute right-10 bottom-6 opacity-[0.06]" />
+    <Heart size={50} color="#DD2530" class="absolute right-1/4 top-10 opacity-[0.1]" />
+  </div>
+
+  <div class="relative mx-auto max-w-3xl px-5 py-24 text-center lg:px-8">
+    <Heart size={34} color="#DD2530" beat class="mx-auto" />
+    <h2 class="mt-6 font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
+      Que tu torta tenga <span class="italic">el final feliz</span> que merece
+    </h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
+      Escríbenos hoy y creemos juntos el detalle que coronará tu gran día.
+      Sin compromiso y con toda la atención que tu boda merece.
+    </p>
+    <a
+      href={waLink()}
+      target="_blank"
+      rel="noopener"
+      class="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-brand shadow-lg transition-all hover:bg-cream hover:shadow-xl"
+    >
+      <Heart size={17} color="#DD2530" />
+      Cotiza por WhatsApp
+    </a>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+---
+import Heart from './Heart.astro';
+import SectionTitle from './SectionTitle.astro';
+
+const faqs = [
+  {
+    q: '¿Puedo personalizar los novios para que se parezcan a nosotros?',
+    a: '¡Claro! Es nuestra especialidad. Nos cuentas por WhatsApp cómo son ustedes —peinado, traje, vestido, colores y detalles— y los modelamos a su semejanza.',
+  },
+  {
+    q: '¿Cuánto tiempo tarda la elaboración?',
+    a: 'Depende del nivel de personalización, pero normalmente entre 1 y 3 semanas. Te confirmamos el tiempo exacto al aprobar tu pedido, así que te recomendamos escribirnos con anticipación.',
+  },
+  {
+    q: '¿Hacen envíos a toda Colombia?',
+    a: 'Sí. Empacamos cada figura de forma segura para que llegue perfecta y enviamos a todo el país a través de transportadora.',
+  },
+  {
+    q: '¿Cómo cotizo y realizo el pago?',
+    a: 'Todo lo coordinamos por WhatsApp de forma cercana. Allí te pasamos la cotización según lo que necesites y las opciones de pago disponibles.',
+  },
+  {
+    q: '¿Hacen figuras para otras celebraciones?',
+    a: 'Sí, además de bodas elaboramos decoraciones para aniversarios, quince años, bautizos y ocasiones especiales. Cuéntanos tu idea.',
+  },
+];
+---
+
+<section id="faq" class="bg-white">
+  <div class="mx-auto max-w-3xl px-5 py-20 lg:px-8 lg:py-28">
+    <SectionTitle
+      eyebrow="Preguntas frecuentes"
+      title="Resolvemos <span class='italic'>tus dudas</span>"
+    />
+
+    <div class="mt-12 divide-y divide-brand-soft border-y border-brand-soft">
+      {
+        faqs.map((f) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+              <span class="flex items-center gap-3 font-serif text-xl font-medium text-brand">
+                <Heart size={15} color="#DD2530" class="shrink-0" />
+                {f.q}
+              </span>
+              <span
+                aria-hidden="true"
+                class="shrink-0 text-2xl font-light text-brand transition-transform duration-200 group-open:rotate-45"
+              >
+                +
+              </span>
+            </summary>
+            <p class="mt-3 pl-8 pr-8 text-base leading-relaxed text-ink/65">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

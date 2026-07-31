@@ -1,0 +1,56 @@
+---
+import Heart from './Heart.astro';
+import SectionTitle from './SectionTitle.astro';
+
+const testimonials = [
+  {
+    quote:
+      '¡Quedaron idénticos a nosotros! Todos en la boda preguntaban dónde los conseguimos. Un recuerdo que vamos a guardar para siempre.',
+    name: 'Laura & Andrés',
+    place: 'Bogotá',
+  },
+  {
+    quote:
+      'El trato fue cercanísimo por WhatsApp y cumplieron con los tiempos. La calidad del trabajo a mano se nota muchísimo.',
+    name: 'Valentina & Camilo',
+    place: 'Medellín',
+  },
+  {
+    quote:
+      'Pedimos algo muy personalizado con nuestra mascota incluida y lo lograron perfecto. 20 años de experiencia se sienten.',
+    name: 'Daniela & Julián',
+    place: 'Cali',
+  },
+];
+---
+
+<section class="bg-white">
+  <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+    <SectionTitle
+      eyebrow="Parejas felices"
+      title="Historias que <span class='italic'>coronamos</span>"
+      subtitle="Nada nos enorgullece más que ser parte del día más importante de nuestras parejas."
+    />
+
+    <div class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+      {
+        testimonials.map((t) => (
+          <figure class="flex flex-col rounded-2xl border border-brand-soft bg-cream p-8 shadow-sm">
+            <div class="flex gap-1" aria-hidden="true">
+              {Array.from({ length: 5 }).map(() => (
+                <Heart size={15} color="#DD2530" />
+              ))}
+            </div>
+            <blockquote class="mt-5 flex-1 font-serif text-xl italic leading-relaxed text-ink/80">
+              “{t.quote}”
+            </blockquote>
+            <figcaption class="mt-6 border-t border-brand-soft pt-4">
+              <span class="font-semibold text-brand">{t.name}</span>
+              <span class="block text-sm text-ink/50">{t.place}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+---
+import { waLink } from '../config';
+import Heart from './Heart.astro';
+import SectionTitle from './SectionTitle.astro';
+
+const products = [
+  {
+    name: 'Novios Clásicos',
+    desc: 'La pareja tradicional, elegante y atemporal. El favorito de siempre.',
+  },
+  {
+    name: 'Novios Personalizados',
+    desc: 'Modelados a semejanza de ustedes: peinado, traje, vestido y detalles.',
+  },
+  {
+    name: 'Del Mismo Sexo',
+    desc: 'Celebramos todo el amor. Parejas hechas a la medida de su historia.',
+  },
+  {
+    name: 'Temáticos',
+    desc: 'Hobbies, profesiones, mascotas… un guiño único a lo que los une.',
+  },
+  {
+    name: 'Aniversarios',
+    desc: 'Bodas de plata, oro y más. Para seguir celebrando el amor.',
+  },
+  {
+    name: 'Quince Años & Bautizos',
+    desc: 'Figuras artesanales para coronar cada celebración importante.',
+  },
+];
+---
+
+<section id="catalogo" class="bg-white">
+  <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+    <SectionTitle
+      eyebrow="Nuestro catálogo"
+      title="Encuentra <span class='italic'>los novios</span> perfectos"
+      subtitle="Cada modelo se elabora a mano y se puede personalizar. Elige el que más te enamore y cotízalo por WhatsApp sin compromiso."
+    />
+
+    <div class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        products.map((p) => (
+          <article class="group flex flex-col overflow-hidden rounded-2xl border border-brand-soft bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+            {/* Imagen (placeholder) */}
+            <div class="relative flex aspect-square items-center justify-center bg-brand-soft">
+              <div class="text-center text-brand/40">
+                <Heart size={34} color="#DD2530" class="mx-auto opacity-40" />
+                <p class="mt-2 text-[11px] font-medium uppercase tracking-widest">Foto producto</p>
+              </div>
+            </div>
+
+            <div class="flex flex-1 flex-col p-6">
+              <h3 class="font-serif text-2xl font-semibold text-brand">{p.name}</h3>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-ink/60">{p.desc}</p>
+              <a
+                href={waLink(`¡Hola! Me interesan los "${p.name}". ¿Me ayudan a cotizarlos? 💍`)}
+                target="_blank"
+                rel="noopener"
+                class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-accent"
+              >
+                Cotizar por WhatsApp
+                <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

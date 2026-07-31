@@ -1,0 +1,44 @@
+---
+import Heart from './Heart.astro';
+import SectionTitle from './SectionTitle.astro';
+
+// Mosaico: algunas celdas ocupan más espacio para un look editorial.
+const tiles = [
+  'sm:col-span-2 sm:row-span-2',
+  '',
+  '',
+  '',
+  'sm:col-span-2',
+  '',
+  '',
+  '',
+];
+---
+
+<section id="galeria" class="bg-cream">
+  <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+    <SectionTitle
+      eyebrow="Galería"
+      title="Nuestro trabajo <span class='italic'>en cada torta</span>"
+      subtitle="Una muestra de las decoraciones que han coronado bodas reales. Muy pronto, tu torta podría estar aquí."
+    />
+
+    <div class="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 sm:grid-cols-4">
+      {
+        tiles.map((span, i) => (
+          <div
+            class:list={[
+              'flex items-center justify-center rounded-2xl border border-dashed border-brand/20 bg-white transition-colors hover:bg-brand-soft',
+              span,
+            ]}
+          >
+            <div class="text-center text-brand/35">
+              <Heart size={26} color="#DD2530" class="mx-auto opacity-40" />
+              <p class="mt-2 text-[10px] font-medium uppercase tracking-widest">Foto {i + 1}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

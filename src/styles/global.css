@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Tokens de marca — Novios para Tortas                              */
+/*  Base: blanco · Marca: #490A41 · Acento (corazones): #DD2530      */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Color de marca (vino/berenjena) con su escala */
+  --color-brand: #490a41;
+  --color-brand-light: #6d2064;
+  --color-brand-soft: #f6eef4;
+
+  /* Color de acento (rojo corazón) — uso puntual */
+  --color-accent: #dd2530;
+  --color-accent-soft: #fbe9ea;
+
+  /* Neutros elegantes */
+  --color-cream: #fbf9f7;
+  --color-ink: #2b2430;
+
+  /* Tipografías */
+  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visible y accesible */
+:where(a, button):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Utilidad: aparición suave al hacer scroll (progresiva, sin JS obligatorio) */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: reveal-up 0.7s ease forwards;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+
+  @keyframes reveal-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Latido sutil para los corazones de marca */
+@media (prefers-reduced-motion: no-preference) {
+  .heart-beat {
+    animation: heart-beat 2.8s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @keyframes heart-beat {
+    0%, 100% { transform: scale(1); }
+    8% { transform: scale(1.18); }
+    16% { transform: scale(1); }
+    24% { transform: scale(1.12); }
+    32% { transform: scale(1); }
+  }
+}

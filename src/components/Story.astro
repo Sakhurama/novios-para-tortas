@@ -1,0 +1,45 @@
+---
+import { site } from '../config';
+import Heart from './Heart.astro';
+import SectionTitle from './SectionTitle.astro';
+---
+
+<section id="historia" class="bg-brand-soft">
+  <div class="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
+    <!-- Imagen (placeholder) -->
+    <div class="order-2 lg:order-1">
+      <div class="flex aspect-[4/3] w-full items-center justify-center rounded-[2rem] border border-dashed border-brand/25 bg-white">
+        <div class="text-center text-brand/40">
+          <Heart size={40} color="#DD2530" class="mx-auto opacity-40" />
+          <p class="mt-3 text-sm font-medium uppercase tracking-widest">Foto de la familia</p>
+          <p class="mt-1 text-xs">o del taller artesanal</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Texto -->
+    <div class="order-1 lg:order-2">
+      <SectionTitle
+        align="left"
+        eyebrow="Nuestra historia"
+        title="Una familia que hace <span class='italic'>del amor</span> su oficio"
+      />
+      <div class="mt-6 space-y-4 text-lg leading-relaxed text-ink/70">
+        <p>
+          Hace más de <strong class="font-semibold text-brand">{site.yearsInMarket} años</strong> comenzamos con
+          algo muy simple: convertir el amor de otras personas en pequeñas figuras
+          hechas a mano. Lo que nació en casa se transformó en una tradición familiar.
+        </p>
+        <p>
+          Desde entonces hemos coronado <strong class="font-semibold text-brand">miles de tortas</strong> de
+          matrimonio en toda Colombia. Cada novio que sale de nuestras manos lleva la
+          misma dedicación del primer día.
+        </p>
+        <p class="flex items-center gap-2 text-base text-ink/60">
+          <Heart size={16} color="#DD2530" beat />
+          Gracias por dejarnos ser parte de tu historia de amor.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

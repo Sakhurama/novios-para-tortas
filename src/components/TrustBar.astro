@@ -1,0 +1,45 @@
+---
+import Heart from './Heart.astro';
+
+const pillars = [
+  { title: '100% hecho a mano', desc: 'Cada figura, modelada pieza por pieza.' },
+  { title: 'Personalización total', desc: 'Se parecen a ustedes: traje, vestido, detalles.' },
+  { title: 'Envíos a toda Colombia', desc: 'Empaque seguro que protege cada detalle.' },
+  { title: 'Miles de bodas felices', desc: 'Dos décadas coronando tortas de matrimonio.' },
+];
+---
+
+<section class="border-y border-brand-soft bg-cream">
+  <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+    <!-- Pilares de confianza -->
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        pillars.map((p) => (
+          <div class="flex items-start gap-3">
+            <Heart size={18} color="#DD2530" class="mt-1 shrink-0" />
+            <div>
+              <p class="font-serif text-lg font-semibold text-brand">{p.title}</p>
+              <p class="mt-1 text-sm text-ink/60">{p.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Logos / reconocimientos (placeholders) -->
+    <div class="mt-12 border-t border-brand-soft pt-8">
+      <p class="text-center text-xs font-medium uppercase tracking-widest text-ink/40">
+        Nos han acompañado y recomendado
+      </p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-8">
+        {
+          Array.from({ length: 5 }).map((_, i) => (
+            <div class="flex h-14 w-32 items-center justify-center rounded-lg border border-dashed border-brand/20 bg-white text-[10px] font-medium uppercase tracking-wide text-brand/40">
+              Logo {i + 1}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
