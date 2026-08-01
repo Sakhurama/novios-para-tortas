@@ -1,20 +1,29 @@
 ---
+import { Image } from 'astro:assets';
 import { waLink } from '../config';
-import Heart from './Heart.astro';
 import SectionTitle from './SectionTitle.astro';
+import clasicos from '../assets/catalogo/clasicos.jpg';
+import tematicos from '../assets/catalogo/tematicos.jpg';
+import aniversarios from '../assets/catalogo/aniversarios.png';
 
 const products = [
   {
     name: 'Novios Clásicos',
     desc: 'La pareja tradicional, elegante y atemporal. El favorito de siempre.',
+    image: clasicos,
+    alt: 'Novios clásicos hechos a mano bajo un arco de rosas rosadas',
   },
   {
     name: 'Temáticos',
     desc: 'Hobbies, profesiones, mascotas… un guiño único a lo que los une.',
+    image: tematicos,
+    alt: 'Novios personalizados con sus dos perros golden retriever a los pies',
   },
   {
     name: 'Aniversarios',
     desc: 'Bodas de plata, oro y más. Para seguir celebrando el amor.',
+    image: aniversarios,
+    alt: 'Pareja de esposos mayores coronando una torta blanca de aniversario',
   },
 ];
 ---
@@ -31,12 +40,16 @@ const products = [
       {
         products.map((p) => (
           <article class="group flex flex-col overflow-hidden rounded-2xl border border-brand-soft bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-            {/* Imagen (placeholder) */}
-            <div class="relative flex aspect-square items-center justify-center bg-brand-soft">
-              <div class="text-center text-brand/40">
-                <Heart size={34} color="#DD2530" class="mx-auto opacity-40" />
-                <p class="mt-2 text-[11px] font-medium uppercase tracking-widest">Foto producto</p>
-              </div>
+            {/* Las fotos son verticales: 4/5 recorta lo mínimo. */}
+            <div class="relative aspect-[4/5] overflow-hidden bg-brand-soft">
+              <Image
+                src={p.image}
+                alt={p.alt}
+                widths={[400, 640, 800]}
+                sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 90vw"
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
             </div>
 
             <div class="flex flex-1 flex-col p-6">

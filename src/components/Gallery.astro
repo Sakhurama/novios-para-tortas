@@ -1,18 +1,24 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { galleryImageAlts, GALLERY_ALT_FALLBACK } from '../config';
 import Heart from './Heart.astro';
 import SectionTitle from './SectionTitle.astro';
 
-// Mosaico: algunas celdas ocupan más espacio para un look editorial.
-const tiles = [
-  'sm:col-span-2 sm:row-span-2',
-  '',
-  '',
-  '',
-  'sm:col-span-2',
-  '',
-  '',
-  '',
-];
+// Igual que el Hero: las fotos entran solas al soltarlas en src/assets/galeria/.
+const modules = import.meta.glob<ImageMetadata>(
+  '../assets/galeria/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true, import: 'default' }
+);
+
+const photos = Object.entries(modules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, image]) => {
+    const file = path.split('/').pop() ?? '';
+    return { image, alt: galleryImageAlts[file] ?? GALLERY_ALT_FALLBACK };
+  });
+
+const hasPhotos = photos.length > 0;
 ---
 
 <section id="galeria" class="bg-cream">
@@ -23,22 +29,36 @@ const tiles = [
       subtitle="Una muestra de las decoraciones que han coronado bodas reales. Muy pronto, tu torta podría estar aquí."
     />
 
-    <div class="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 sm:grid-cols-4">
-      {
-        tiles.map((span, i) => (
-          <div
-            class:list={[
-              'flex items-center justify-center rounded-2xl border border-dashed border-brand/20 bg-white transition-colors hover:bg-brand-soft',
-              span,
-            ]}
-          >
-            <div class="text-center text-brand/35">
-              <Heart size={26} color="#DD2530" class="mx-auto opacity-40" />
-              <p class="mt-2 text-[10px] font-medium uppercase tracking-widest">Foto {i + 1}</p>
+    {
+      hasPhotos ? (
+        // Masonry con columnas CSS: cada foto conserva su proporción real, que
+        // aquí va desde casi cuadrada hasta muy vertical. Sin recortes.
+        <div class="mt-14 columns-2 gap-4 lg:columns-3 xl:columns-4">
+          {photos.map(({ image, alt }) => (
+            <figure class="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand/10">
+              <Image
+                src={image}
+                alt={alt}
+                widths={[300, 500, 700]}
+                sizes="(min-width: 1280px) 18rem, (min-width: 1024px) 24vw, 45vw"
+                loading="lazy"
+                class="w-full transition-transform duration-500 hover:scale-[1.04]"
+              />
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 sm:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div class="flex items-center justify-center rounded-2xl border border-dashed border-brand/20 bg-white">
+              <div class="text-center text-brand/35">
+                <Heart size={26} color="#DD2530" class="mx-auto opacity-40" />
+                <p class="mt-2 text-[10px] font-medium uppercase tracking-widest">Foto {i + 1}</p>
+              </div>
             </div>
-          </div>
-        ))
-      }
-    </div>
+          ))}
+        </div>
+      )
+    }
   </div>
 </section>

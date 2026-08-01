@@ -23,8 +23,31 @@ export const site = {
  * archivo tal cual. Lo que no esté listado usa HERO_ALT_FALLBACK.
  */
 export const heroImageAlts: Record<string, string> = {
-  // 'novios-clasicos.jpg': 'Figura de novios clásicos sobre una torta blanca',
+  "01-clasicos.jpg":
+    "Novios clásicos hechos a mano bajo un arco de rosas, sobre una torta de matrimonio blanca",
+  "02-mascotas.jpg":
+    "Novios personalizados acompañados de sus dos perros golden retriever",
+  "03-up-globos.jpg":
+    "Novios inspirados en la película Up, con la casa de globos y un beso de los abuelos",
 };
+
+/**
+ * Galería. Igual que el Hero: las fotos se sueltan en `src/assets/galeria/` y
+ * aparecen solas, ordenadas por nombre de archivo.
+ */
+export const galleryImageAlts: Record<string, string> = {
+  "01-hilo-rojo.jpg":
+    "Novios abrazados envueltos en el hilo rojo del destino",
+  "02-besos.jpg":
+    "Novio con sombrero y la cara llena de besos, mientras la novia lo besa en la mejilla",
+  "03-familia.jpg":
+    "Figuras de toda la familia: los novios, los abuelos y las niñas con vestidos rojos",
+  "04-up-globos.jpg":
+    "Novios estilo Up junto a la casa de globos, sobre un pedestal blanco",
+};
+
+export const GALLERY_ALT_FALLBACK =
+  "Decoración artesanal de novios sobre una torta de matrimonio";
 
 export const HERO_ALT_FALLBACK =
   "Figuras artesanales de novios sobre una torta de matrimonio";

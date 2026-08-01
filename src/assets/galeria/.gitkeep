@@ -1,0 +1,6 @@
+Suelta aquí las fotos de la galería (.jpg, .png, .webp o .avif).
+Aparecen automáticamente, ordenadas por nombre de archivo — usa un prefijo
+numérico para fijar el orden: 01-hilo-rojo.jpg, 02-besos.jpg…
+
+El mosaico es masonry: cada foto conserva su proporción, no se recorta nada.
+El texto alternativo se define en src/config.ts (galleryImageAlts).

@@ -24,11 +24,6 @@ import HeroCarousel from './HeroCarousel.astro';
   >
     <!-- Texto -->
     <div class="max-w-xl">
-      <span class="inline-flex items-center gap-2 rounded-full bg-brand-soft px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-brand">
-        <Heart size={12} color="#DD2530" />
-        {site.yearsInMarket} años de tradición familiar
-      </span>
-
       <h1 class="mt-6 font-serif text-5xl font-semibold leading-[1.05] text-brand sm:text-6xl lg:text-7xl">
         El detalle que corona
         <span class="italic"> el amor</span> de tu boda
@@ -72,7 +67,7 @@ import HeroCarousel from './HeroCarousel.astro';
 
       <!-- Sello flotante "20 años" (fuera del carrusel: sobresale del marco) -->
       <div
-        class="absolute -bottom-5 -left-5 flex h-28 w-28 flex-col items-center justify-center rounded-full bg-white text-center shadow-xl ring-1 ring-brand/10 sm:h-32 sm:w-32"
+        class="absolute -bottom-5 -right-5 flex h-28 w-28 flex-col items-center justify-center rounded-full bg-white text-center shadow-xl ring-1 ring-brand/10 sm:h-32 sm:w-32"
       >
         <span class="font-serif text-3xl font-semibold leading-none text-brand sm:text-4xl">{site.yearsInMarket}</span>
         <span class="mt-1 text-[10px] font-medium uppercase tracking-widest text-ink/60">años de<br />experiencia</span>

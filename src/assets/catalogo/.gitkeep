@@ -1,0 +1,11 @@
+Las 3 fotos del catálogo, una por categoría. A diferencia del Hero y la
+galería, aquí los nombres SÍ importan: cada archivo está importado por nombre
+en src/components/Catalog.astro.
+
+  clasicos.jpg      → "Novios Clásicos"
+  tematicos.jpg     → "Temáticos"
+  aniversarios.png  → "Aniversarios"
+
+Para cambiar una foto, reemplaza el archivo conservando el nombre. Si cambias
+la extensión, actualiza también el import en Catalog.astro.
+Se muestran en 4/5 (vertical) — usa fotos verticales para que no se recorten.
