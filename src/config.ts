@@ -15,6 +15,24 @@ export const site = {
 } as const;
 
 /**
+ * Carrusel del Hero.
+ * Las fotos se sueltan en `src/assets/hero/` y aparecen solas, ordenadas por
+ * nombre de archivo. No hay que registrarlas aquí.
+ *
+ * Este mapa es solo para el texto alternativo: la clave es el nombre del
+ * archivo tal cual. Lo que no esté listado usa HERO_ALT_FALLBACK.
+ */
+export const heroImageAlts: Record<string, string> = {
+  // 'novios-clasicos.jpg': 'Figura de novios clásicos sobre una torta blanca',
+};
+
+export const HERO_ALT_FALLBACK =
+  "Figuras artesanales de novios sobre una torta de matrimonio";
+
+/** Slides punteados que se muestran mientras no haya fotos reales. */
+export const HERO_PLACEHOLDER_SLIDES = 3;
+
+/**
  * Número de WhatsApp en formato internacional SIN "+", espacios ni guiones.
  * Ejemplo Colombia: 57 + número → "573001234567"
  * ⚠️ PLACEHOLDER: reemplázalo por el número real.

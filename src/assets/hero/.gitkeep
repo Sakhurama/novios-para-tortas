@@ -1,0 +1,5 @@
+Suelta aquí las fotos del carrusel del Hero (.jpg, .png, .webp o .avif).
+Aparecen automáticamente, ordenadas por nombre de archivo — usa un prefijo
+numérico si quieres fijar el orden: 01-clasicos.jpg, 02-tematicos.jpg…
+
+El texto alternativo de cada foto se define en src/config.ts (heroImageAlts).

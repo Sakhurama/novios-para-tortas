@@ -18,13 +18,15 @@ const year = new Date().getFullYear();
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
       <!-- Marca -->
       <div class="lg:col-span-2">
-        <div class="flex items-center gap-2">
-          <span class="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-brand/40 bg-brand-soft text-[10px] font-medium uppercase tracking-wide text-brand/60">
-            Logo
-          </span>
-          <span class="font-serif text-xl text-brand">
-            Novios <span class="italic">para Tortas</span>
-          </span>
+        <div class="flex items-center">
+          <img
+            src="/logo-morado.png"
+            alt="Novios para Tortas"
+            width="592"
+            height="226"
+            class="h-12 w-auto"
+            loading="lazy"
+          />
         </div>
         <p class="mt-4 max-w-sm text-sm leading-relaxed text-ink/60">
           {site.yearsInMarket} años creando a mano las figuras que coronan las tortas de

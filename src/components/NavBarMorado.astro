@@ -11,12 +11,12 @@ const links = [
 ];
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-brand-soft/70 bg-white/85 backdrop-blur-md">
+<header class="navbar-morado sticky top-0 z-40 w-full border-b border-white/15 bg-brand-light/95 backdrop-blur-md">
   <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
     <!-- Logo -->
     <a href="#inicio" class="flex items-center" aria-label="Novios para Tortas — inicio">
       <img
-        src="/logo-morado.png"
+        src="/logo-blanco.png"
         alt="Novios para Tortas"
         width="592"
         height="226"
@@ -31,7 +31,7 @@ const links = [
           <li>
             <a
               href={l.href}
-              class="text-sm font-medium text-ink/70 transition-colors hover:text-brand"
+              class="text-sm font-medium text-white/75 transition-colors hover:text-white"
             >
               {l.label}
             </a>
@@ -47,9 +47,9 @@ const links = [
         href={waLink()}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-light hover:shadow-md"
+        class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-brand shadow-sm transition-all hover:bg-brand-soft hover:shadow-md"
       >
-        <Heart size={13} color="#ffffff" />
+        <Heart size={13} color="#DD2530" />
         <span class="hidden sm:inline">Cotiza por WhatsApp</span>
         <span class="sm:hidden">Cotizar</span>
       </a>
@@ -57,11 +57,11 @@ const links = [
       <!-- Botón hamburguesa (solo móvil/tablet) -->
       <button
         type="button"
-        id="nav-toggle"
+        id="nav-toggle-morado"
         aria-label="Abrir menú"
-        aria-controls="mobile-menu"
+        aria-controls="mobile-menu-morado"
         aria-expanded="false"
-        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-brand transition-colors hover:bg-brand-soft lg:hidden"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/15 lg:hidden"
       >
         <!-- Ícono hamburguesa -->
         <svg class="nav-icon-open h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
@@ -77,8 +77,8 @@ const links = [
 
   <!-- Menú móvil desplegable -->
   <div
-    id="mobile-menu"
-    class="hidden overflow-hidden border-t border-brand-soft bg-white lg:hidden"
+    id="mobile-menu-morado"
+    class="hidden overflow-hidden border-t border-white/15 bg-brand-light lg:hidden"
   >
     <ul class="mx-auto flex max-w-7xl flex-col px-5 py-2">
       {
@@ -87,7 +87,7 @@ const links = [
             <a
               href={l.href}
               data-nav-link
-              class="flex items-center gap-2 border-b border-brand-soft/60 py-3.5 font-serif text-lg text-brand transition-colors hover:text-accent"
+              class="flex items-center gap-2 border-b border-white/15 py-3.5 font-serif text-lg text-white transition-colors hover:text-white/70"
             >
               <Heart size={13} color="#DD2530" />
               {l.label}
@@ -99,9 +99,16 @@ const links = [
   </div>
 </header>
 
+<style>
+  /* El foco global es morado: sobre este fondo no se vería */
+  .navbar-morado :where(a, button):focus-visible {
+    outline-color: #ffffff;
+  }
+</style>
+
 <script>
-  const toggle = document.getElementById('nav-toggle');
-  const menu = document.getElementById('mobile-menu');
+  const toggle = document.getElementById('nav-toggle-morado');
+  const menu = document.getElementById('mobile-menu-morado');
   const iconOpen = toggle?.querySelector('.nav-icon-open');
   const iconClose = toggle?.querySelector('.nav-icon-close');
 
