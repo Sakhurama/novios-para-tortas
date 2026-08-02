@@ -22,9 +22,10 @@ import HeroCarousel from './HeroCarousel.astro';
   <div
     class="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-12"
   >
-    <!-- Texto -->
-    <div class="max-w-xl">
-      <h1 class="mt-6 font-serif text-5xl font-semibold leading-[1.05] text-brand sm:text-6xl lg:text-7xl">
+    <!-- Texto. En móvil va debajo del carrusel (order-2); en escritorio vuelve
+         a la columna izquierda. -->
+    <div class="order-2 max-w-xl lg:order-1">
+      <h1 class="font-serif text-5xl font-semibold leading-[1.05] text-brand sm:text-6xl lg:mt-6 lg:text-7xl">
         El detalle que corona
         <span class="italic"> el amor</span> de tu boda
       </h1>
@@ -62,7 +63,7 @@ import HeroCarousel from './HeroCarousel.astro';
     <!-- Carrusel de fotos.
          Alto fijo en escritorio = pantalla - navbar (5rem) - py-12 (6rem),
          para que la foto entre completa sin empujar la sección. -->
-    <div class="relative lg:h-[calc(100svh-11rem)] lg:max-h-[45rem]">
+    <div class="relative order-1 lg:order-2 lg:h-[calc(100svh-11rem)] lg:max-h-[45rem]">
       <HeroCarousel />
 
       <!-- Sello flotante "20 años" (fuera del carrusel: sobresale del marco) -->
