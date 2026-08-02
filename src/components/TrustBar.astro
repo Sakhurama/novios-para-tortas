@@ -1,12 +1,14 @@
 ---
-import Heart from './Heart.astro';
+import Icon from './Icon.astro';
 
+// Cada pilar lleva su propio icono de línea (ver Icon.astro) en lugar de
+// repetir el corazón cuatro veces.
 const pillars = [
-  { title: '100% hecho a mano', desc: 'Cada figura, modelada pieza por pieza.' },
-  { title: 'Personalización total', desc: 'Se parecen a ustedes: traje, vestido, detalles.' },
-  { title: 'Envíos a toda Colombia', desc: 'Empaque seguro que protege cada detalle.' },
-  { title: 'Miles de bodas felices', desc: 'Dos décadas coronando tortas de matrimonio.' },
-];
+  { icon: 'hand', title: '100% hecho a mano', desc: 'Cada figura, modelada pieza por pieza.' },
+  { icon: 'brush', title: 'Personalización total', desc: 'Se parecen a ustedes: traje, vestido, detalles.' },
+  { icon: 'package', title: 'Envíos a toda Colombia', desc: 'Empaque seguro que protege cada detalle.' },
+  { icon: 'rings', title: 'Miles de bodas felices', desc: 'Dos décadas coronando tortas de matrimonio.' },
+] as const;
 ---
 
 <section class="border-y border-brand-soft bg-cream">
@@ -15,8 +17,10 @@ const pillars = [
     <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
       {
         pillars.map((p) => (
-          <div class="flex items-start gap-3">
-            <Heart size={18} color="#DD2530" class="mt-1 shrink-0" />
+          <div class="flex items-start gap-4">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white ring-1 ring-brand-soft">
+              <Icon name={p.icon} size={20} color="#490A41" />
+            </span>
             <div>
               <p class="font-serif text-lg font-semibold text-brand">{p.title}</p>
               <p class="mt-1 text-sm text-ink/60">{p.desc}</p>
