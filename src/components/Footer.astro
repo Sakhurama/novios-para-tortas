@@ -1,14 +1,6 @@
 ---
-import { site, waLink } from '../config';
+import { navLinks, site, waLink } from '../config';
 import Heart from './Heart.astro';
-
-const links = [
-  { href: '#catalogo', label: 'Catálogo' },
-  { href: '#por-que', label: 'Por qué elegirnos' },
-  { href: '#historia', label: 'Nuestra historia' },
-  { href: '#galeria', label: 'Galería' },
-  { href: '#faq', label: 'Preguntas frecuentes' },
-];
 
 const year = new Date().getFullYear();
 ---
@@ -39,10 +31,10 @@ const year = new Date().getFullYear();
         <h3 class="text-xs font-semibold uppercase tracking-widest text-brand">Explora</h3>
         <ul class="mt-4 space-y-2">
           {
-            links.map((l) => (
+            navLinks.map((l) => (
               <li>
                 <a href={l.href} class="text-sm text-ink/60 transition-colors hover:text-brand">
-                  {l.label}
+                  {'labelLong' in l ? l.labelLong : l.label}
                 </a>
               </li>
             ))
@@ -58,9 +50,6 @@ const year = new Date().getFullYear();
             <a href={waLink()} target="_blank" rel="noopener" class="inline-flex items-center gap-2 transition-colors hover:text-brand">
               <Heart size={13} color="#DD2530" /> WhatsApp
             </a>
-          </li>
-          <li>
-            <a href={`mailto:${site.email}`} class="transition-colors hover:text-brand">{site.email}</a>
           </li>
           <li>
             <a href={site.instagram} target="_blank" rel="noopener" class="transition-colors hover:text-brand">Instagram</a>

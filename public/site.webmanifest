@@ -1,0 +1,16 @@
+{
+  "name": "Novios para Tortas",
+  "short_name": "Novios para Tortas",
+  "description": "Novios artesanales para torta de matrimonio, hechos a mano en Colombia.",
+  "lang": "es-CO",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf9f7",
+  "theme_color": "#6D2064",
+  "icons": [
+    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

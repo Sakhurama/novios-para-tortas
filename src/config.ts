@@ -8,11 +8,28 @@ export const site = {
   name: "Novios para Tortas",
   tagline: "Decoraciones hechas a mano para la torta de tus sueños",
   yearsInMarket: 20,
-  city: "Colombia",
-  email: "hola@noviosparatortas.com", // placeholder
-  instagram: "https://instagram.com/", // placeholder
-  facebook: "https://facebook.com/", // placeholder
+  city: "Colombia", // ⚠️ TODO: ciudad real del taller (ej. "Bogotá")
+  instagram: "https://instagram.com/", // ⚠️ TODO: perfil real
+  facebook: "https://facebook.com/", // ⚠️ TODO: perfil real
 } as const;
+
+/**
+ * Navegación del sitio. Fuente única para el navbar y el footer: antes estaba
+ * duplicada en ambos y se desincronizó (el footer decía "Preguntas frecuentes"
+ * y el navbar "Preguntas", y los dos apuntaban a una sección ya retirada).
+ *
+ * `labelLong` es el texto del footer, donde cabe más; si no está, se usa `label`.
+ */
+export const navLinks = [
+  { href: "#catalogo", label: "Catálogo" },
+  { href: "#historia", label: "Nuestra historia" },
+  { href: "#galeria", label: "Galería" },
+  { href: "#faq", label: "Preguntas", labelLong: "Preguntas frecuentes" },
+] as const satisfies ReadonlyArray<{
+  href: string;
+  label: string;
+  labelLong?: string;
+}>;
 
 /**
  * Carrusel del Hero.
@@ -33,7 +50,8 @@ export const heroImageAlts: Record<string, string> = {
 
 /**
  * Galería. Igual que el Hero: las fotos se sueltan en `src/assets/galeria/` y
- * aparecen solas, ordenadas por nombre de archivo.
+ * aparecen solas, ordenadas por nombre de archivo. El prefijo numérico marca
+ * el orden en que se quieren mostrar.
  */
 export const galleryImageAlts: Record<string, string> = {
   "01-hilo-rojo.jpg":
@@ -44,6 +62,12 @@ export const galleryImageAlts: Record<string, string> = {
     "Figuras de toda la familia: los novios, los abuelos y las niñas con vestidos rojos",
   "04-up-globos.jpg":
     "Novios estilo Up junto a la casa de globos, sobre un pedestal blanco",
+  "05-si-acepta.jpg":
+    "Novios humorísticos: la novia sonríe con su ramo de rosas rojas mientras lleva atado con una soga al novio, que tiene un cartel con un “Sí” tapándole la boca",
+  "06-el-acepta.jpg":
+    "La misma pareja humorística de espaldas: la novia con tiara sostiene un letrero que dice “Él… acepta” y arrastra al novio amarrado con una soga",
+  "07-besito.jpg":
+    "Novia con velo de tul dando un beso en la mejilla al novio, que viste traje azul y corbata celeste",
 };
 
 export const GALLERY_ALT_FALLBACK =

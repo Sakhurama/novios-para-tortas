@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://noviosparatortas.com/sitemap-index.xml

@@ -114,6 +114,14 @@ body {
   }
 }
 
+/* Los carruseles no arrancan solos si se pide menos movimiento, así que el
+   botón de pausa no tendría nada que pausar. */
+@media (prefers-reduced-motion: reduce) {
+  [data-play-toggle] {
+    display: none;
+  }
+}
+
 /* Latido sutil para los corazones de marca */
 @media (prefers-reduced-motion: no-preference) {
   .heart-beat {

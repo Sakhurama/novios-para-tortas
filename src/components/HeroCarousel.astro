@@ -97,7 +97,7 @@ const showControls = count > 1;
           </svg>
         </button>
 
-        {/* Puntos */}
+        {/* Puntos + pausa */}
         <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/75 px-3 py-2 shadow-sm ring-1 ring-brand/10 backdrop-blur">
           {Array.from({ length: count }).map((_, i) => (
             <button
@@ -108,6 +108,22 @@ const showControls = count > 1;
               class="hero-ctrl hero-dot h-2 rounded-full bg-brand/30 transition-all"
             />
           ))}
+
+          {/* El aria-label y el aria-pressed los mantiene carousel.ts */}
+          <button
+            type="button"
+            data-play-toggle
+            aria-label="Pausar el paso automático"
+            aria-pressed="false"
+            class="hero-ctrl ml-1 flex h-6 w-6 items-center justify-center rounded-full border-l border-brand/15 pl-1 text-brand/70 transition-colors hover:text-brand"
+          >
+            <svg class="icon-pause h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+            </svg>
+            <svg class="icon-play hidden h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5l11 7-11 7z" />
+            </svg>
+          </button>
         </div>
       </>
     )

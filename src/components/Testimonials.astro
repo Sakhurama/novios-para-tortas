@@ -79,7 +79,7 @@ const showControls = testimonials.length > 1;
         showControls && (
           /* Los controles van debajo, no encima de la cita: sobre texto las
              flechas flotantes taparían justo lo que hay que leer. */
-          <div class="mt-8 flex items-center justify-center gap-4">
+          <div class="relative mt-8 flex items-center justify-center gap-4">
             <button
               type="button"
               data-prev
@@ -111,6 +111,23 @@ const showControls = testimonials.length > 1;
             >
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Absoluto para no descentrar el trío anterior/puntos/siguiente.
+                El aria-label y el aria-pressed los mantiene carousel.ts */}
+            <button
+              type="button"
+              data-play-toggle
+              aria-label="Pausar el paso automático"
+              aria-pressed="false"
+              class="absolute right-0 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-ink/35 transition-colors hover:text-brand"
+            >
+              <svg class="icon-pause h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+              </svg>
+              <svg class="icon-play hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5l11 7-11 7z" />
               </svg>
             </button>
           </div>

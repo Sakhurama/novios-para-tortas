@@ -8,6 +8,8 @@
 //   [data-track]  contenedor con overflow-x y scroll-snap
 //   [data-slide]  cada diapositiva, del ancho del track
 //   [data-prev] / [data-next] / [data-dot]  controles (opcionales)
+//   [data-play-toggle]  botón de pausa/reanudar (opcional), con dos iconos
+//                       hijos marcados .icon-pause y .icon-play
 
 interface CarouselOptions {
   autoplayMs?: number;
@@ -29,6 +31,10 @@ export function initCarousels(rootSelector: string, { autoplayMs = 5000 }: Carou
     let timer: number | undefined;
     let hovering = false;
     let focused = false;
+    // Pausa pedida a mano. Va aparte de `hovering`/`focused` porque esas son
+    // pausas temporales: al quitar el ratón el autoplay vuelve. Esta no vuelve
+    // hasta que se pulse otra vez.
+    let userPaused = false;
 
     function markActive(i: number) {
       index = i;
@@ -68,9 +74,34 @@ export function initCarousels(rootSelector: string, { autoplayMs = 5000 }: Carou
 
     function start() {
       stop();
-      if (reduced.matches || hovering || focused || document.hidden) return;
+      if (reduced.matches || userPaused || hovering || focused || document.hidden) return;
       timer = window.setInterval(() => goTo(index + 1), autoplayMs);
     }
+
+    // WCAG 2.2.2: cualquier movimiento automático de más de 5s necesita un
+    // control explícito para detenerlo. Pausar al pasar el ratón no basta —
+    // en táctil no hay ratón, y con teclado el foco puede estar en otro sitio.
+    const playToggle = root.querySelector<HTMLButtonElement>('[data-play-toggle]');
+
+    function syncToggle() {
+      if (!playToggle) return;
+      playToggle.setAttribute('aria-pressed', String(userPaused));
+      playToggle.setAttribute(
+        'aria-label',
+        userPaused ? 'Reanudar el paso automático' : 'Pausar el paso automático'
+      );
+      playToggle.querySelector('.icon-pause')?.classList.toggle('hidden', userPaused);
+      playToggle.querySelector('.icon-play')?.classList.toggle('hidden', !userPaused);
+    }
+
+    playToggle?.addEventListener('click', () => {
+      userPaused = !userPaused;
+      syncToggle();
+      if (userPaused) stop();
+      else start();
+    });
+
+    syncToggle();
 
     root.querySelector('[data-prev]')?.addEventListener('click', () => goTo(index - 1));
     root.querySelector('[data-next]')?.addEventListener('click', () => goTo(index + 1));

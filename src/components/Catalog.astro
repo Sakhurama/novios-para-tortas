@@ -2,30 +2,13 @@
 import { Image } from 'astro:assets';
 import { waLink } from '../config';
 import SectionTitle from './SectionTitle.astro';
-import clasicos from '../assets/catalogo/clasicos.jpg';
-import tematicos from '../assets/catalogo/tematicos.jpg';
-import aniversarios from '../assets/catalogo/aniversarios.png';
+import { formatCOP, hasPrices, products } from '../data/products';
 
-const products = [
-  {
-    name: 'Novios Clásicos',
-    desc: 'La pareja tradicional, elegante y atemporal. El favorito de siempre.',
-    image: clasicos,
-    alt: 'Novios clásicos hechos a mano bajo un arco de rosas rosadas',
-  },
-  {
-    name: 'Temáticos',
-    desc: 'Hobbies, profesiones, mascotas… un guiño único a lo que los une.',
-    image: tematicos,
-    alt: 'Novios personalizados con sus dos perros golden retriever a los pies',
-  },
-  {
-    name: 'Aniversarios',
-    desc: 'Bodas de plata, oro y más. Para seguir celebrando el amor.',
-    image: aniversarios,
-    alt: 'Pareja de esposos mayores coronando una torta blanca de aniversario',
-  },
-];
+// El "desde" no puede leerse como precio cerrado: cada figura se cotiza según
+// lo que se personalice. La aclaración solo aparece si hay precios cargados.
+const subtitle = hasPrices
+  ? 'Cada modelo se elabora a mano y se puede personalizar. Los precios son de partida: el valor final depende de la personalización que elijas.'
+  : 'Cada modelo se elabora a mano y se puede personalizar. Elige el que más te enamore y cotízalo por WhatsApp sin compromiso.';
 ---
 
 <section id="catalogo" class="bg-white">
@@ -33,7 +16,7 @@ const products = [
     <SectionTitle
       eyebrow="Nuestro catálogo"
       title="Encuentra <span class='italic'>los novios</span> perfectos"
-      subtitle="Cada modelo se elabora a mano y se puede personalizar. Elige el que más te enamore y cotízalo por WhatsApp sin compromiso."
+      subtitle={subtitle}
     />
 
     <div data-reveal-group class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -53,7 +36,14 @@ const products = [
             </div>
 
             <div class="flex flex-1 flex-col p-6">
-              <h3 class="font-serif text-2xl font-semibold text-brand">{p.name}</h3>
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="font-serif text-2xl font-semibold text-brand">{p.name}</h3>
+                {p.priceFrom !== null && (
+                  <span class="shrink-0 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold whitespace-nowrap text-brand">
+                    Desde {formatCOP(p.priceFrom)}
+                  </span>
+                )}
+              </div>
               <p class="mt-2 flex-1 text-sm leading-relaxed text-ink/60">{p.desc}</p>
               <a
                 href={waLink(`¡Hola! Me interesan los "${p.name}". ¿Me ayudan a cotizarlos? 💍`)}

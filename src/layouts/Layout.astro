@@ -1,37 +1,136 @@
 ---
 import '../styles/global.css';
 import { site } from '../config';
+import { faqs } from '../data/faqs';
+import { hasPrices, products } from '../data/products';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Las páginas de error no deben indexarse ni salir en el sitemap. */
+  noindex?: boolean;
 }
 
 const {
   title = `${site.name} · Novios artesanales para torta de matrimonio`,
   description = `Fabricamos a mano las figuras de novios que coronan tu torta de matrimonio. ${site.yearsInMarket} años de tradición familiar en Colombia. Cotiza por WhatsApp.`,
+  noindex = false,
 } = Astro.props;
+
+// `Astro.site` sale de `site` en astro.config.mjs. WhatsApp y Facebook ignoran
+// las URLs relativas en Open Graph, así que todas estas tienen que ser absolutas.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.jpg', Astro.site);
+
+// --- Datos estructurados ---------------------------------------------------
+// `sameAs` solo acepta perfiles reales. Mientras las redes sigan siendo los
+// placeholders (`https://instagram.com/` a secas), declararlas sería decirle a
+// Google que la marca es la portada de Instagram. Un perfil de verdad siempre
+// tiene algo después del dominio.
+const socialProfiles = [site.instagram, site.facebook].filter(
+  (url) => new URL(url).pathname.length > 1
+);
+
+// Se usa Organization y no LocalBusiness: el taller no tiene dirección física
+// pública, y un LocalBusiness sin `address` es esquema inválido que Google
+// ignora. `areaServed` cubre el alcance nacional, que es lo que aplica aquí.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': new URL('#organizacion', Astro.site).href,
+  name: site.name,
+  url: Astro.site?.href,
+  logo: new URL('/logo-morado.png', Astro.site).href,
+  image: ogImage.href,
+  description,
+  slogan: site.tagline,
+  foundingDate: String(new Date().getFullYear() - site.yearsInMarket),
+  areaServed: { '@type': 'Country', name: 'Colombia' },
+  ...(socialProfiles.length > 0 && { sameAs: socialProfiles }),
+};
+
+// Las 5 preguntas ya escritas califican para resultado enriquecido. Salen de
+// src/data/faqs.ts, el mismo origen que pinta la sección visible.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+// El catálogo solo se declara cuando hay precios reales: un `Product` sin
+// `offers` genera avisos de campo faltante en el test de Google. En cuanto se
+// carguen los precios en src/data/products.ts, esto se activa solo.
+const catalogSchema = hasPrices
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `Catálogo de ${site.name}`,
+      itemListElement: products.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Product',
+          name: p.name,
+          description: p.desc,
+          image: new URL(p.image.src, Astro.site).href,
+          brand: { '@type': 'Brand', name: site.name },
+          ...(p.priceFrom !== null && {
+            offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: 'COP',
+              lowPrice: p.priceFrom,
+              availability: 'https://schema.org/InStock',
+            },
+          }),
+        },
+      })),
+    }
+  : null;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es-CO">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#6D2064" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
-    <!-- Open Graph -->
+    <!-- Open Graph: es lo que decide cómo se ve el enlace al pegarlo en un
+         chat de WhatsApp, que es por donde entra todo el negocio. -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
     <meta property="og:locale" content="es_CO" />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`${site.name} — novios hechos a mano para torta de matrimonio`}
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.href} />
 
     <!-- Fuentes: serif elegante (títulos) + sans limpia (cuerpo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,14 +146,38 @@ const {
     <script is:inline>
       document.documentElement.classList.add('js-anim');
     </script>
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(organizationSchema)}
+    />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+    {
+      catalogSchema && (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(catalogSchema)} />
+      )
+    }
+
+    <Analytics />
   </head>
   <body>
+    <!-- Primer tabulador de la página: deja saltarse el navbar entero. -->
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-white focus:shadow-lg"
+    >
+      Saltar al contenido
+    </a>
+
     <slot />
 
     <script>
       import { initReveal } from '../scripts/reveal';
+      import { initWhatsAppTracking } from '../scripts/analytics';
 
       initReveal();
+      initWhatsAppTracking();
     </script>
   </body>
 </html>

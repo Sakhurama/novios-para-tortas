@@ -21,12 +21,12 @@ const photos = Object.entries(modules)
 const hasPhotos = photos.length > 0;
 ---
 
-<section id="galeria" class="bg-cream">
+<section id="galeria" class="bg-cream" data-gallery>
   <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
     <SectionTitle
       eyebrow="Galería"
       title="Nuestro trabajo <span class='italic'>en cada torta</span>"
-      subtitle="Una muestra de las decoraciones que han coronado bodas reales. Muy pronto, tu torta podría estar aquí."
+      subtitle="Una muestra de los novios que hemos hecho para bodas reales. Toca cualquier foto para verla en grande."
     />
 
     {
@@ -36,17 +36,25 @@ const hasPhotos = photos.length > 0;
         // El escalonado va más corto que el general: aquí hay muchas más
         // piezas y a 90ms la última llegaría demasiado tarde.
         <div data-reveal-group class="mt-14 columns-2 gap-4 [--reveal-step:60ms] lg:columns-3 xl:columns-4">
-          {photos.map(({ image, alt }) => (
-            <figure class="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand/10">
+          {photos.map(({ image, alt }, i) => (
+            // Botón y no <figure> con onclick: el detalle está en el modelado y
+            // solo se aprecia en grande, así que ampliar tiene que funcionar
+            // también con teclado.
+            <button
+              type="button"
+              data-lightbox-open
+              aria-label={`Ampliar foto ${i + 1} de ${photos.length}: ${alt}`}
+              class="group mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand/10"
+            >
               <Image
                 src={image}
                 alt={alt}
                 widths={[300, 500, 700]}
                 sizes="(min-width: 1280px) 18rem, (min-width: 1024px) 24vw, 45vw"
                 loading="lazy"
-                class="w-full transition-transform duration-500 hover:scale-[1.04]"
+                class="w-full transition-transform duration-500 group-hover:scale-[1.04]"
               />
-            </figure>
+            </button>
           ))}
         </div>
       ) : (
@@ -63,4 +71,170 @@ const hasPhotos = photos.length > 0;
       )
     }
   </div>
+
+  {
+    hasPhotos && (
+      <dialog data-lightbox class="lightbox" aria-label="Galería ampliada">
+        <button type="button" data-lightbox-close class="lightbox__ctrl lightbox__close" aria-label="Cerrar la galería ampliada">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        {photos.length > 1 && (
+          <button type="button" data-lightbox-prev class="lightbox__ctrl lightbox__prev" aria-label="Foto anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </button>
+        )}
+
+        <div data-lightbox-stage class="lightbox__stage">
+          {photos.map(({ image, alt }) => (
+            <Image
+              src={image}
+              alt={alt}
+              data-lightbox-slide
+              widths={[700, 1000, 1400]}
+              sizes="(min-width: 1024px) 60vw, 92vw"
+              loading="lazy"
+              class="lightbox__img"
+            />
+          ))}
+        </div>
+
+        {photos.length > 1 && (
+          <button type="button" data-lightbox-next class="lightbox__ctrl lightbox__next" aria-label="Foto siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+
+        {photos.length > 1 && (
+          <p data-lightbox-counter class="lightbox__counter" aria-live="polite" />
+        )}
+      </dialog>
+    )
+  }
 </section>
+
+<style>
+  .lightbox {
+    /* El <dialog> trae márgenes y borde propios del navegador */
+    margin: 0;
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox::backdrop {
+    /* --color-brand con alfa; las variables del @theme no llegan a ::backdrop */
+    background-color: rgb(30 6 26 / 0.88);
+    backdrop-filter: blur(4px);
+  }
+
+  .lightbox__stage {
+    display: grid;
+    place-items: center;
+    padding: 3.5rem 1rem;
+  }
+
+  .lightbox__img {
+    display: none;
+    max-width: min(92vw, 60rem);
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  }
+
+  .lightbox__img.is-active {
+    display: block;
+  }
+
+  .lightbox__ctrl {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    width: 2.75rem;
+    border-radius: 9999px;
+    color: #ffffff;
+    background-color: rgb(255 255 255 / 0.12);
+    transition: background-color 200ms;
+  }
+
+  .lightbox__ctrl:hover {
+    background-color: rgb(255 255 255 / 0.24);
+  }
+
+  /* El foco global es morado y aquí el fondo es casi negro */
+  .lightbox__ctrl:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  .lightbox__ctrl svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .lightbox__prev {
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__next {
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__counter {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] {
+      animation: lightbox-in 220ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    @keyframes lightbox-in {
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+    }
+  }
+</style>
+
+<script>
+  import { initLightbox } from '../scripts/lightbox';
+
+  initLightbox('[data-gallery]');
+</script>
