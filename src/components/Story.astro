@@ -9,7 +9,10 @@ import taller from '../assets/story/taller.jpg';
 <section id="historia" class="bg-brand-soft">
   <div class="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
     <!-- Foto del taller: la pieza a medio terminar junto a los bocetos. -->
-    <div class="order-2 lg:order-1">
+    {/* Solo movimiento vertical: las dos columnas intercambian su posición con
+        order-* entre móvil y escritorio, así que cualquier entrada lateral o
+        escalonada entre ellas se leería al revés en una de las dos. */}
+    <div data-reveal class="order-2 lg:order-1">
       <div class="aspect-square w-full overflow-hidden rounded-[2rem] bg-white shadow-sm ring-1 ring-brand/10">
         <Image
           src={taller}
@@ -29,7 +32,7 @@ import taller from '../assets/story/taller.jpg';
         eyebrow="Nuestra historia"
         title="Una familia que hace <span class='italic'>del amor</span> su oficio"
       />
-      <div class="mt-6 space-y-4 text-lg leading-relaxed text-ink/70">
+      <div data-reveal-group class="mt-6 space-y-4 text-lg leading-relaxed text-ink/70">
         <p>
           Hace más de <strong class="font-semibold text-brand">{site.yearsInMarket} años</strong> comenzamos con
           algo muy simple: convertir el amor de otras personas en pequeñas figuras

@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: '¿Cuánto tiempo tarda la elaboración?',
-    a: 'Depende del nivel de personalización, pero normalmente entre 1 y 3 semanas. Te confirmamos el tiempo exacto al aprobar tu pedido, así que te recomendamos escribirnos con anticipación.',
+    a: 'Normalmente es de 6 días hábiles. Te confirmamos el tiempo exacto al aprobar tu pedido, así que te recomendamos escribirnos con anticipación.',
   },
   {
     q: '¿Hacen envíos a toda Colombia?',
@@ -33,7 +33,12 @@ const faqs = [
       title="Resolvemos <span class='italic'>tus dudas</span>"
     />
 
-    <div class="mt-12 divide-y divide-brand-soft border-y border-brand-soft">
+    {/* Recorrido más corto: son filas de una lista pegadas entre sí y con 20px
+        el movimiento se nota como un acordeón. */}
+    <div
+      data-reveal-group
+      class="mt-12 divide-y divide-brand-soft border-y border-brand-soft [--reveal-y:10px]"
+    >
       {
         faqs.map((f) => (
           <details class="group py-5">

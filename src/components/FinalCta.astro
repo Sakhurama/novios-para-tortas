@@ -11,7 +11,10 @@ import Heart from './Heart.astro';
     <Heart size={50} color="#DD2530" class="absolute right-1/4 top-10 opacity-[0.1]" />
   </div>
 
-  <div class="relative mx-auto max-w-3xl px-5 py-24 text-center lg:px-8">
+  {/* Entra como un bloque, no escalonado: un cierre se lee mejor como una sola
+      afirmación. Además el corazón que late tiene su propia animación y el
+      escalonado, que también usa `animation`, se la comería. */}
+  <div data-reveal class="relative mx-auto max-w-3xl px-5 py-24 text-center lg:px-8">
     <Heart size={34} color="#DD2530" beat class="mx-auto" />
     <h2 class="mt-6 font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
       Que tu torta tenga <span class="italic">el final feliz</span> que merece

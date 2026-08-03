@@ -40,8 +40,21 @@ const {
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+    <!-- Marca el documento antes del primer pintado: el CSS de entrada solo
+         esconde si existe esta clase, así que sin JS no se oculta nada.
+         Tiene que ser is:inline; si Astro lo empaquetara como módulo correría
+         después de pintar y el contenido aparecería para esconderse luego. -->
+    <script is:inline>
+      document.documentElement.classList.add('js-anim');
+    </script>
   </head>
   <body>
     <slot />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+
+      initReveal();
+    </script>
   </body>
 </html>

@@ -42,17 +42,71 @@ body {
   border-radius: 4px;
 }
 
-/* Utilidad: aparición suave al hacer scroll (progresiva, sin JS obligatorio) */
+/* ------------------------------------------------------------------ */
+/*  Aparición de secciones al asomarse en pantalla                     */
+/*  Las orquesta src/scripts/reveal.ts, aquí solo vive el gesto.       */
+/* ------------------------------------------------------------------ */
+:root {
+  /* 20px se lee como "asentarse". Más recorrido y parece que algo entra
+     deslizándose: el movimiento le roba el protagonismo al contenido. */
+  --reveal-y: 20px;
+  --reveal-duration: 700ms;
+  /* Arranca rápido y frena largo. Esa frenada es lo que separa un movimiento
+     cuidado de uno mecánico. */
+  --reveal-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Escalonado entre hermanos: por debajo de 60ms no se percibe y por encima
+     de 150ms se hace esperar al último. */
+  --reveal-step: 90ms;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
+  /* Nada se esconde si no hay JS: la clase .js-anim la pone el script en línea
+     del Layout. Y al colgar todo de esta media query, quien pida menos
+     movimiento lo ve completo desde el primer pintado, sin reglas aparte. */
+  .js-anim [data-reveal],
+  .js-anim [data-reveal-group] > * {
     opacity: 0;
-    transform: translateY(16px);
-    animation: reveal-up 0.7s ease forwards;
-    animation-timeline: view();
-    animation-range: entry 0% cover 25%;
+  }
+
+  /* Red de seguridad: si reveal.ts no llegara a ejecutarse (error de JS, bundle
+     bloqueado), a los 2,5s aparece todo igual. Es justo el fallo que tenía la
+     versión anterior de esta utilidad, que dejaba secciones invisibles para
+     siempre en los navegadores sin animaciones ligadas al scroll. */
+  .js-anim:not(.reveal-ready) [data-reveal],
+  .js-anim:not(.reveal-ready) [data-reveal-group] > * {
+    animation: reveal-up var(--reveal-duration) var(--reveal-ease) 2.5s both;
+  }
+
+  /* Se anima con `animation` y no con `transition` a propósito: estas reglas
+     van fuera de capa y por tanto ganan a las utilidades de Tailwind, así que
+     declarar `transition` aquí pisaría el `transition-all` de las tarjetas del
+     catálogo y les mataría el hover. `animation` no toca nada suyo.
+     Por lo mismo se anima `transform`, que en Tailwind v4 es una propiedad
+     distinta de `translate`: los hover de desplazamiento siguen intactos. */
+  .js-anim [data-reveal].is-in,
+  .js-anim [data-reveal-group].is-in > * {
+    animation: reveal-up var(--reveal-duration) var(--reveal-ease)
+      calc(var(--reveal-delay, 0ms) + var(--reveal-i, 0) * var(--reveal-step)) both;
+  }
+
+  /* El tabulador puede adelantarse al observador: nadie debe quedarse
+     enfocando algo que todavía es invisible. */
+  .js-anim [data-reveal]:focus-within,
+  .js-anim [data-reveal-group] > *:focus-within {
+    opacity: 1;
+    animation: none;
   }
 
   @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(var(--reveal-y));
+    }
+    /* La opacidad termina antes que el desplazamiento: el texto se puede leer
+       enseguida y el movimiento solo acompaña hasta detenerse. */
+    60% {
+      opacity: 1;
+    }
     to {
       opacity: 1;
       transform: translateY(0);
@@ -73,5 +127,21 @@ body {
     16% { transform: scale(1); }
     24% { transform: scale(1.12); }
     32% { transform: scale(1); }
+  }
+}
+
+/* Flotado ambiental de los corazones de fondo del Hero (ver Hero.astro).
+   Los retardos son negativos para que arranquen ya desfasados entre sí, sin
+   que haya que esperar a que el ciclo se descoloque solo. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-hearts > * {
+    animation: float-soft var(--float-dur, 10s) ease-in-out var(--float-delay, 0s) infinite;
+  }
+  .hero-hearts > :nth-child(1) { --float-dur: 9s; --float-y: -10px; }
+  .hero-hearts > :nth-child(2) { --float-dur: 11s; --float-delay: -2s; --float-y: -8px; }
+  .hero-hearts > :nth-child(3) { --float-dur: 13s; --float-delay: -4s; --float-y: -6px; }
+
+  @keyframes float-soft {
+    50% { transform: translateY(var(--float-y, -10px)); }
   }
 }

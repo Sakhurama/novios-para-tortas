@@ -42,7 +42,10 @@ const steps = [
       subtitle="Un proceso cercano y sin complicaciones, de principio a fin."
     />
 
-    <div class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4">
+    <div
+      data-reveal-group
+      class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4"
+    >
       {
         steps.map((s, i) => (
           <div class="relative">
@@ -70,7 +73,7 @@ const steps = [
       }
     </div>
 
-    <div class="mt-14 text-center">
+    <div data-reveal class="mt-14 text-center">
       <a
         href={waLink()}
         target="_blank"

@@ -22,6 +22,9 @@ const testimonials = [
     place: 'Cali',
   },
 ];
+
+// Con un solo testimonio no hay nada que pasar: se muestra la tarjeta y ya.
+const showControls = testimonials.length > 1;
 ---
 
 <section class="bg-white">
@@ -32,25 +35,113 @@ const testimonials = [
       subtitle="Nada nos enorgullece más que ser parte del día más importante de nuestras parejas."
     />
 
-    <div class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+    {/* El carrusel entra como un solo bloque: animar cada testimonio por
+        separado pelearía con su propio desplazamiento. */}
+    <div
+      data-reveal
+      class="mx-auto mt-14 max-w-3xl"
+      data-testimonials
+      role="region"
+      aria-roledescription="carrusel"
+      aria-label="Testimonios de nuestras parejas"
+    >
+      {/* Un testimonio a la vez: la cita gana presencia y se lee de un tirón. */}
+      <div data-track class="tst-track flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden">
+        {
+          testimonials.map((t, i) => (
+            <div
+              data-slide
+              role="group"
+              aria-roledescription="diapositiva"
+              aria-label={`${i + 1} de ${testimonials.length}`}
+              class="w-full shrink-0 snap-center px-1 py-1"
+            >
+              <figure class="flex h-full flex-col items-center rounded-2xl border border-brand-soft bg-cream p-8 text-center shadow-sm sm:p-10">
+                <div class="flex gap-1" aria-hidden="true">
+                  {Array.from({ length: 5 }).map(() => (
+                    <Heart size={15} color="#DD2530" />
+                  ))}
+                </div>
+                <blockquote class="mt-6 flex-1 font-serif text-xl italic leading-relaxed text-ink/80 sm:text-2xl">
+                  “{t.quote}”
+                </blockquote>
+                <figcaption class="mt-6 w-full border-t border-brand-soft pt-5">
+                  <span class="font-semibold text-brand">{t.name}</span>
+                  <span class="block text-sm text-ink/50">{t.place}</span>
+                </figcaption>
+              </figure>
+            </div>
+          ))
+        }
+      </div>
+
       {
-        testimonials.map((t) => (
-          <figure class="flex flex-col rounded-2xl border border-brand-soft bg-cream p-8 shadow-sm">
-            <div class="flex gap-1" aria-hidden="true">
-              {Array.from({ length: 5 }).map(() => (
-                <Heart size={15} color="#DD2530" />
+        showControls && (
+          /* Los controles van debajo, no encima de la cita: sobre texto las
+             flechas flotantes taparían justo lo que hay que leer. */
+          <div class="mt-8 flex items-center justify-center gap-4">
+            <button
+              type="button"
+              data-prev
+              aria-label="Testimonio anterior"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-soft bg-white text-brand shadow-sm transition-colors hover:bg-brand-soft"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" />
+              </svg>
+            </button>
+
+            <div class="flex items-center gap-2">
+              {testimonials.map((_, i) => (
+                <button
+                  type="button"
+                  data-dot
+                  aria-label={`Ir al testimonio ${i + 1}`}
+                  aria-current={i === 0 ? 'true' : undefined}
+                  class="tst-dot h-2 rounded-full bg-brand/25 transition-all"
+                />
               ))}
             </div>
-            <blockquote class="mt-5 flex-1 font-serif text-xl italic leading-relaxed text-ink/80">
-              “{t.quote}”
-            </blockquote>
-            <figcaption class="mt-6 border-t border-brand-soft pt-4">
-              <span class="font-semibold text-brand">{t.name}</span>
-              <span class="block text-sm text-ink/50">{t.place}</span>
-            </figcaption>
-          </figure>
-        ))
+
+            <button
+              type="button"
+              data-next
+              aria-label="Testimonio siguiente"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-soft bg-white text-brand shadow-sm transition-colors hover:bg-brand-soft"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        )
       }
     </div>
   </div>
 </section>
+
+<style>
+  /* El track se desplaza, pero sin barra visible */
+  .tst-track {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .tst-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tst-dot {
+    width: 0.5rem;
+  }
+  .tst-dot[aria-current='true'] {
+    width: 1.5rem;
+    background-color: var(--color-brand);
+  }
+</style>
+
+<script>
+  import { initCarousels } from '../scripts/carousel';
+
+  // Un poco más lento que el del hero: leer una cita cuesta más que ver una foto.
+  initCarousels('[data-testimonials]', { autoplayMs: 7000 });
+</script>

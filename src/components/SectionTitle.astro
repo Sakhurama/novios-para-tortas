@@ -13,7 +13,13 @@ const { eyebrow, title, subtitle, align = 'center', onDark = false } = Astro.pro
 const isCenter = align === 'center';
 ---
 
-<div class:list={[isCenter ? 'text-center mx-auto max-w-2xl' : 'text-left max-w-2xl']}>
+{/* El escalonado de entrada (eyebrow → título → subtítulo) va fijo aquí y no
+    como prop: es el mismo gesto en las 6 secciones que usan el componente, y
+    Astro no reenvía atributos sueltos a un componente hijo. */}
+<div
+  data-reveal-group
+  class:list={[isCenter ? 'text-center mx-auto max-w-2xl' : 'text-left max-w-2xl']}
+>
   {
     eyebrow && (
       <span

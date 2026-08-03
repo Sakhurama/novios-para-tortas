@@ -33,7 +33,9 @@ const hasPhotos = photos.length > 0;
       hasPhotos ? (
         // Masonry con columnas CSS: cada foto conserva su proporción real, que
         // aquí va desde casi cuadrada hasta muy vertical. Sin recortes.
-        <div class="mt-14 columns-2 gap-4 lg:columns-3 xl:columns-4">
+        // El escalonado va más corto que el general: aquí hay muchas más
+        // piezas y a 90ms la última llegaría demasiado tarde.
+        <div data-reveal-group class="mt-14 columns-2 gap-4 [--reveal-step:60ms] lg:columns-3 xl:columns-4">
           {photos.map(({ image, alt }) => (
             <figure class="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand/10">
               <Image
@@ -48,7 +50,7 @@ const hasPhotos = photos.length > 0;
           ))}
         </div>
       ) : (
-        <div class="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 sm:grid-cols-4">
+        <div data-reveal-group class="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 [--reveal-step:60ms] sm:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div class="flex items-center justify-center rounded-2xl border border-dashed border-brand/20 bg-white">
               <div class="text-center text-brand/35">
