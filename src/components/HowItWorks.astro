@@ -1,26 +1,33 @@
 ---
 import { waLink } from '../config';
 import Heart from './Heart.astro';
+import Icon from './Icon.astro';
 import SectionTitle from './SectionTitle.astro';
 
+// Cada paso lleva su icono de línea (ver Icon.astro) dentro de un círculo, con
+// el número en una insignia encima: se entiende de un vistazo sin leer el texto.
 const steps = [
   {
     n: '01',
+    icon: 'catalogo' as const,
     title: 'Elige tu modelo',
     desc: 'Explora el catálogo e inspírate. ¿Quieres algo único? También lo creamos desde cero.',
   },
   {
     n: '02',
+    icon: 'chat' as const,
     title: 'Cuéntanos los detalles',
     desc: 'Por WhatsApp nos dices cómo son ustedes: colores, vestuario, peinados y esos toques especiales.',
   },
   {
     n: '03',
+    icon: 'aprobado' as const,
     title: 'Aprobamos juntos',
     desc: 'Te confirmamos diseño, tiempos y envío. Trabajamos a mano tu pedido con todo el cuidado.',
   },
   {
     n: '04',
+    icon: 'envio' as const,
     title: 'Recíbelo en casa',
     desc: 'Empacamos con seguridad y enviamos a toda Colombia. Solo queda coronar tu torta.',
   },
@@ -32,18 +39,31 @@ const steps = [
     <SectionTitle
       eyebrow="Cómo funciona"
       title="Pedir tus novios es <span class='italic'>muy fácil</span>"
-      subtitle="Un proceso cercano y sin complicaciones, de principio a fin, siempre acompañados por WhatsApp."
+      subtitle="Un proceso cercano y sin complicaciones, de principio a fin."
     />
 
-    <div class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4">
       {
         steps.map((s, i) => (
           <div class="relative">
-            <span class="font-serif text-5xl font-semibold text-brand-soft">{s.n}</span>
-            <h3 class="mt-2 font-serif text-xl font-semibold text-brand">{s.title}</h3>
+            <span class="relative flex h-16 w-16 items-center justify-center rounded-full bg-brand-soft">
+              <Icon name={s.icon} size={28} color="#490A41" />
+              <span class="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-brand font-serif text-sm font-semibold text-white">
+                {s.n}
+              </span>
+            </span>
+            <h3 class="mt-5 font-serif text-xl font-semibold text-brand">{s.title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-ink/60">{s.desc}</p>
+            {/* Hilo punteado con un corazón que encadena un paso con el siguiente. */}
             {i < steps.length - 1 && (
-              <Heart size={14} color="#DD2530" class="absolute -right-1 top-4 hidden opacity-30 lg:block" />
+              <span
+                aria-hidden="true"
+                class="absolute -right-6 left-[4.75rem] top-8 hidden items-center gap-2 lg:flex"
+              >
+                <span class="flex-1 border-t border-dashed border-brand/25" />
+                <Heart size={12} color="#DD2530" class="opacity-40" />
+                <span class="flex-1 border-t border-dashed border-brand/25" />
+              </span>
             )}
           </div>
         ))
