@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site } from '../config';
+import { site, WHATSAPP_E164, WHATSAPP_NUMBER } from '../config';
 import { faqs } from '../data/faqs';
 import { hasPrices, products } from '../data/products';
 import Analytics from '../components/Analytics.astro';
@@ -50,6 +50,18 @@ const organizationSchema = {
   slogan: site.tagline,
   foundingDate: String(new Date().getFullYear() - site.yearsInMarket),
   areaServed: { '@type': 'Country', name: 'Colombia' },
+  // El WhatsApp es el único canal de contacto del negocio, así que va tanto en
+  // `telephone` (el campo que lee Google) como en un `contactPoint` que apunta
+  // al chat: es lo que convierte, no una llamada.
+  telephone: WHATSAPP_E164,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    telephone: WHATSAPP_E164,
+    url: `https://wa.me/${WHATSAPP_NUMBER}`,
+    areaServed: 'CO',
+    availableLanguage: 'Spanish',
+  },
   ...(socialProfiles.length > 0 && { sameAs: socialProfiles }),
 };
 

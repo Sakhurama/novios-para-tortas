@@ -82,9 +82,15 @@ export const HERO_PLACEHOLDER_SLIDES = 3;
 /**
  * Número de WhatsApp en formato internacional SIN "+", espacios ni guiones.
  * Ejemplo Colombia: 57 + número → "573001234567"
- * ⚠️ PLACEHOLDER: reemplázalo por el número real.
+ * Número real del negocio: +57 300 5438227
  */
-export const WHATSAPP_NUMBER = "573000000000";
+export const WHATSAPP_NUMBER = "573005438227";
+
+/**
+ * El mismo número en formato E.164 (con "+"), que es el que exige schema.org
+ * en `telephone`. Se deriva de WHATSAPP_NUMBER para que no haya dos fuentes.
+ */
+export const WHATSAPP_E164 = `+${WHATSAPP_NUMBER}`;
 
 /** Mensaje por defecto al abrir el chat */
 export const WHATSAPP_DEFAULT_MESSAGE =

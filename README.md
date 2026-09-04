@@ -28,7 +28,6 @@ Hay valores marcados con `⚠️ TODO` que deben reemplazarse por los reales:
 
 | Qué                  | Dónde                                             |
 | -------------------- | ------------------------------------------------- |
-| Número de WhatsApp   | `src/config.ts` → `WHATSAPP_NUMBER`               |
 | Ciudad del taller    | `src/config.ts` → `site.city`                     |
 | Instagram y Facebook | `src/config.ts` → `site.instagram` / `.facebook`  |
 | Precios "desde"      | `src/data/products.ts` → `priceFrom`              |
