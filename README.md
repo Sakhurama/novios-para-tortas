@@ -19,7 +19,7 @@ npm run dev      # http://localhost:4321
 | `npm run dev`     | Servidor de desarrollo                                  |
 | `npm run build`   | Compila a `dist/`                                       |
 | `npm run preview` | Sirve `dist/` como en producción                        |
-| `npm run og`      | Regenera `public/og.jpg`, la vista previa al compartir   |
+| `npm run og`      | Regenera `public/og-2.jpg`, la vista previa al compartir |
 | `npm run check`   | Verifica que `dist/` es publicable (va dentro del build) |
 
 ## Antes de publicar
@@ -84,7 +84,7 @@ src/
 ├─ assets/      fotos procesadas por astro:assets (hero, galería, catálogo)
 └─ config.ts    datos de la marca, navegación, textos alternativos, waLink()
 
-public/         iconos, logos, og.jpg, robots.txt, site.webmanifest y _headers
+public/         iconos, logos, og-2.jpg, robots.txt, site.webmanifest y _headers
 wrangler.jsonc  qué publica Cloudflare: dist/ como assets estáticos
 scripts/        generate-og.mjs — compone la imagen para compartir
                 check-build.mjs — valida dist/ al terminar el build

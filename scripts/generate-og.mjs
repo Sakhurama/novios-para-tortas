@@ -1,4 +1,4 @@
-// Genera la imagen de Open Graph (public/og.jpg) que WhatsApp, Facebook y X
+// Genera la imagen de Open Graph (public/og-2.jpg) que WhatsApp, Facebook y X
 // muestran al compartir el enlace.
 //
 // Se ejecuta a mano —`node scripts/generate-og.mjs`— y el resultado se
@@ -18,6 +18,13 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+
+// El "-2" no es decorativo. La primera versión salió como JPEG progresivo y el
+// enlace no generaba vista previa en WhatsApp; Meta cachea la imagen por su URL,
+// así que reemplazar el archivo en su sitio habría seguido sirviendo la copia
+// mala. Un nombre que nunca ha visto es la única forma de forzar la descarga.
+// Si algún día vuelve a haber que romper esa caché, se sube el número.
+const OUT = 'og-2.jpg';
 
 const W = 1200;
 const H = 630;
@@ -105,9 +112,29 @@ await sharp({
     { input: logo, left: PAD_X, top: blockY },
     { input: Buffer.from(overlay), left: 0, top: 0 },
   ])
-  .jpeg({ quality: 86, mozjpeg: true })
-  .toFile(join(root, 'public/og.jpg'));
+  // El JPEG tiene que salir baseline, no progresivo: el scraper de Meta —el que
+  // alimenta las vistas previas de WhatsApp— falla con los progresivos, y el
+  // resultado es un enlace que se comparte sin imagen.
+  //
+  // De ahí que aquí NO se use `mozjpeg: true`, que es lo natural y lo que había
+  // antes. sharp procesa ese preset el último y fija `progressive` a true de
+  // forma incondicional, así que pisa cualquier `progressive: false` que se le
+  // ponga al lado — se intentó y la imagen seguía saliendo progresiva. Lo que
+  // hay debajo es el preset desarmado: sus tres ajustes de compresión, sin los
+  // dos que fuerzan el modo progresivo. Mismo peso, formato correcto.
+  .jpeg({
+    quality: 86,
+    trellisQuantisation: true,
+    overshootDeringing: true,
+    quantisationTable: 3,
+    progressive: false,
+    optimiseScans: false,
+  })
+  .toFile(join(root, 'public', OUT));
 
 // WhatsApp deja de generar la vista previa por encima de ~300 KB.
-const { size } = statSync(join(root, 'public/og.jpg'));
-console.log(`public/og.jpg — ${W}x${H}, ${Math.round(size / 1024)} KB`);
+const { size } = statSync(join(root, 'public', OUT));
+const { isProgressive } = await sharp(join(root, 'public', OUT)).metadata();
+console.log(
+  `public/${OUT} — ${W}x${H}, ${Math.round(size / 1024)} KB, progressive: ${isProgressive}`
+);
