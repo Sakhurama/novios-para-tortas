@@ -38,31 +38,37 @@ Mientras estén sin poner, el sitio funciona igual: los precios no se pintan, la
 redes no se declaran en los datos estructurados y la analítica no se inyecta.
 Nada de esto rompe el build.
 
-## Despliegue (Cloudflare Pages)
+## Despliegue (Cloudflare Workers Builds)
 
-El sitio es estático: Cloudflare solo sirve los archivos de `dist/`. Ajustes del
-proyecto en **Workers & Pages → Settings → Build**:
+El sitio es estático: Cloudflare solo sirve los archivos de `dist/`. No hay
+servidor, ni adaptador, ni SSR.
 
-| Ajuste                          | Valor                  |
-| ------------------------------- | ---------------------- |
-| Build command                   | `npm ci && npm run build` |
-| Build output directory          | `dist`                 |
-| Variable `NODE_VERSION`         | `22.19.0` (igual que `.nvmrc`) |
-| Variable `PUBLIC_GA_ID`         | el ID de GA4, si se quiere analítica |
+`wrangler.jsonc` declara justo eso —un Worker de solo assets apuntando a
+`dist/`— y **no es opcional**. Sin ese archivo, `wrangler deploy` no sabe qué
+publicar y arranca su asistente de configuración; como en el build no hay nadie
+que conteste, se auto-responde «sí» y ejecuta `astro add cloudflare`, que
+instala el adaptador SSR y reescribe `astro.config.mjs`. El sitio recompilado
+así pide las fotos a `/_image?…`, el endpoint de imágenes bajo demanda, que
+necesita un servidor detrás. Resultado: la página se ve entera pero las 21
+fotos dan 404. Pasó de verdad.
 
-**`npm ci` no es opcional.** Con `npm install`, npm puede saltarse las
-dependencias opcionales por plataforma cuando el `package-lock.json` se generó
-en otro sistema operativo. La que se salta aquí es `@img/sharp-linux-x64`, y sin
-`sharp` Astro no puede generar los `.webp` durante el build: degrada las fotos a
-URLs del endpoint `/_image`, que en un hosting estático devuelve 404. Fue
-exactamente lo que rompió el primer despliegue: la página se veía entera pero sin
-una sola foto. `npm ci` obliga a respetar el lockfile y a instalar las mismas
-versiones que en local.
+Ajustes del proyecto en **Workers & Pages → Settings → Build**:
 
-Como segunda red, `npm run build` termina ejecutando `scripts/check-build.mjs`,
-que comprueba que no queda ninguna URL `/_image`, que todo lo referenciado en
-`/_astro/` existe de verdad y que cada foto de `src/assets/` tiene su variante
-optimizada. Si algo de eso falla, el build falla y Cloudflare no publica.
+| Ajuste                  | Valor                          |
+| ----------------------- | ------------------------------ |
+| Build command           | `npm ci && npm run build`      |
+| Deploy command          | `npx wrangler deploy`          |
+| Variable `PUBLIC_GA_ID` | el ID de GA4, si se quiere analítica |
+
+La versión de Node sale de `.nvmrc`; no hace falta declararla en el panel.
+`npm ci` instala exactamente lo que fija `package-lock.json`, de modo que
+Cloudflare compila con las mismas versiones que en local.
+
+Como red de seguridad, `npm run build` termina ejecutando
+`scripts/check-build.mjs`, que comprueba que no queda ninguna URL `/_image`,
+que todo lo referenciado en `/_astro/` existe de verdad y que cada foto de
+`src/assets/` tiene su variante optimizada. Si algo de eso falla, el build falla
+y no se publica nada.
 
 ## Estructura
 
@@ -79,6 +85,7 @@ src/
 └─ config.ts    datos de la marca, navegación, textos alternativos, waLink()
 
 public/         iconos, logos, og.jpg, robots.txt, site.webmanifest y _headers
+wrangler.jsonc  qué publica Cloudflare: dist/ como assets estáticos
 scripts/        generate-og.mjs — compone la imagen para compartir
                 check-build.mjs — valida dist/ al terminar el build
 ```

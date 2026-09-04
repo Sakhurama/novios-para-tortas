@@ -1,0 +1,25 @@
+{
+  // Sin este archivo, `wrangler deploy` no sabe qué publicar y entra en su
+  // asistente de configuración. En Cloudflare Workers Builds no hay nadie que
+  // responda, así que se auto-contesta "sí" y ejecuta `astro add cloudflare`:
+  // instala el adaptador SSR y reescribe astro.config.mjs. Eso fue lo que dejó
+  // el sitio pidiendo las fotos a /_image?… —el endpoint de imágenes bajo
+  // demanda, que necesita servidor— y devolviendo 404 en las 21 imágenes.
+  //
+  // Con la configuración declarada aquí, wrangler se limita a subir dist/.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "novios-para-tortas",
+  "compatibility_date": "2026-09-04",
+
+  // Sin "main": es un Worker de solo assets estáticos. No hay código de
+  // servidor porque el sitio no lo necesita; todo el HTML sale del build.
+  "assets": {
+    "directory": "./dist",
+
+    // Sirve dist/404.html en las rutas que no existen (src/pages/404.astro).
+    // Ojo: "single-page-application" serviría index.html en su lugar, que en
+    // un sitio de una sola página parece inofensivo pero devolvería 200 y
+    // contenido de portada ante cualquier URL inventada.
+    "not_found_handling": "404-page"
+  }
+}
