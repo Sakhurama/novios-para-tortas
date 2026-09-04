@@ -1,0 +1,12 @@
+# Los archivos de /_astro/ llevan el hash del contenido en el nombre: si el
+# contenido cambia, cambia la URL. Por eso pueden cachearse para siempre.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# El HTML, en cambio, nunca se cachea: es quien apunta a esos hashes. Si se
+# quedara pegado a una versión vieja, pediría archivos que ya no existen y las
+# fotos volverían a dar 404 aunque el despliegue fuese correcto.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
