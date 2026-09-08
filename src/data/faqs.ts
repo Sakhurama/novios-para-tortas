@@ -25,6 +25,10 @@ export const faqs: Faq[] = [
     a: 'Sí. Empacamos cada figura de forma segura para que llegue perfecta y enviamos a todo el país a través de transportadora.',
   },
   {
+    q: '¿Atienden pedidos o envíos fuera de Colombia?',
+    a: 'Por ahora solo elaboramos y enviamos pedidos dentro de Colombia. Si nos escribes desde otro país, lamentablemente aún no podemos ayudarte con tu figura.',
+  },
+  {
     q: '¿Cómo cotizo y realizo el pago?',
     a: 'Todo lo coordinamos por WhatsApp de forma cercana. Allí te pasamos la cotización según lo que necesites y las opciones de pago disponibles.',
   },

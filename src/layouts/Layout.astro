@@ -13,8 +13,8 @@ interface Props {
 }
 
 const {
-  title = `${site.name} · Novios artesanales para torta de matrimonio`,
-  description = `Fabricamos a mano las figuras de novios que coronan tu torta de matrimonio. ${site.yearsInMarket} años de tradición familiar en Colombia. Cotiza por WhatsApp.`,
+  title = `${site.name} · Novios artesanales para torta de matrimonio en Colombia`,
+  description = `Fabricamos a mano las figuras de novios que coronan tu torta de matrimonio. Taller en ${site.city} con ${site.yearsInMarket} años de tradición familiar y envíos a toda Colombia. Cotiza por WhatsApp.`,
   noindex = false,
 } = Astro.props;
 
@@ -35,9 +35,12 @@ const socialProfiles = [site.instagram, site.facebook].filter(
   (url) => new URL(url).pathname.length > 1
 );
 
-// Se usa Organization y no LocalBusiness: el taller no tiene dirección física
-// pública, y un LocalBusiness sin `address` es esquema inválido que Google
-// ignora. `areaServed` cubre el alcance nacional, que es lo que aplica aquí.
+// Se usa Organization y no LocalBusiness: el negocio es un taller sin tienda ni
+// dirección de calle pública, y un LocalBusiness sin `address` completa genera
+// avisos en Google. Aun así declaramos la localidad (ciudad + departamento +
+// país) sin calle: es una señal geográfica válida que ayuda a que Google asocie
+// la marca a Colombia y no a otro país hispanohablante. `areaServed` cubre el
+// alcance nacional de los envíos.
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -49,6 +52,12 @@ const organizationSchema = {
   description,
   slogan: site.tagline,
   foundingDate: String(new Date().getFullYear() - site.yearsInMarket),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.city,
+    addressRegion: site.region,
+    addressCountry: 'CO',
+  },
   areaServed: { '@type': 'Country', name: 'Colombia' },
   // El WhatsApp es el único canal de contacto del negocio, así que va tanto en
   // `telephone` (el campo que lee Google) como en un `contactPoint` que apunta
@@ -125,6 +134,12 @@ const catalogSchema = hasPrices
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical.href} />
     {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <!-- Señales geográficas: refuerzan que el negocio es de Colombia (Bucaramanga,
+         Santander). No pesan tanto como el schema o un perfil de Google Business,
+         pero son estándar y cuestan dos líneas. -->
+    <meta name="geo.region" content={site.regionCode} />
+    <meta name="geo.placename" content={site.city} />
 
     <!-- Open Graph: es lo que decide cómo se ve el enlace al pegarlo en un
          chat de WhatsApp, que es por donde entra todo el negocio. -->

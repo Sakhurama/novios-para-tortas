@@ -8,7 +8,12 @@ export const site = {
   name: "Novios para Tortas",
   tagline: "Decoraciones hechas a mano para la torta de tus sueños",
   yearsInMarket: 20,
-  city: "Colombia", // ⚠️ TODO: ciudad real del taller (ej. "Bogotá")
+  // Ciudad base del taller. Alimenta el Hero, el footer y el schema de dirección
+  // (addressLocality) del Layout: es una de las señales que le dicen a Google que
+  // el negocio es de Colombia, no de otro país hispanohablante.
+  city: "Bucaramanga",
+  region: "Santander", // departamento — va en addressRegion del schema
+  regionCode: "CO-SAN", // ISO 3166-2, para el meta geo.region
   instagram: "https://instagram.com/", // ⚠️ TODO: perfil real
   facebook: "https://facebook.com/", // ⚠️ TODO: perfil real
 } as const;
