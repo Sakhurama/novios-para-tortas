@@ -2,6 +2,7 @@
 import { waLink, site } from '../config';
 import Heart from './Heart.astro';
 import HeroCarousel from './HeroCarousel.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 ---
 
 <section id="inicio" class="relative bg-white">
@@ -29,13 +30,18 @@ import HeroCarousel from './HeroCarousel.astro';
     <div class="order-2 max-w-xl lg:order-1">
       <h1 class="font-serif text-5xl font-semibold leading-[1.05] text-brand sm:text-6xl lg:mt-6 lg:text-7xl">
         El detalle que corona
-        <span class="italic"> el amor</span> de tu boda
+        <span class="italic"> el amor </span>de tu boda
       </h1>
 
+      {/* El párrafo carga con el trabajo que el titular ya no hace: nombra el
+          producto tal y como lo busca la gente ("novios para torta de
+          matrimonio") y aterriza el parecido en cosas concretas. La última
+          frase es el argumento que menos se usaba y más vende: la pieza
+          sobrevive a la fiesta. */}
       <p class="mt-6 text-lg leading-relaxed text-ink/70">
-        Fabricamos <strong class="font-semibold text-ink">a mano</strong> las figuras de
-        novios que hacen única tu torta de matrimonio. Cada pieza, pensada para
-        parecerse a ustedes y guardarse como recuerdo para siempre.
+        Hacemos <strong class="font-semibold text-ink">a mano</strong> los novios de tu
+        torta de matrimonio: su peinado, su vestido, el traje, la mascota y ese detalle
+        que solo ustedes entienden. La torta se acaba esa noche; ellos se quedan.
       </p>
 
       <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -45,20 +51,25 @@ import HeroCarousel from './HeroCarousel.astro';
           rel="noopener"
           class="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-base font-medium text-white shadow-md transition-all hover:bg-brand-light hover:shadow-lg"
         >
-          <Heart size={16} color="#ffffff" />
-          Cotiza tu novio ideal
+          {/* El glifo de WhatsApp en vez del corazón: anuncia que al otro lado
+              hay un chat y no un formulario. Y el texto dejó de pedir una
+              gestión ("cotiza") para pedir una conversación. De paso se va la
+              ambigüedad de "tu novio ideal", que en singular se leía como
+              pareja sentimental. */}
+          <WhatsAppIcon size={18} />
+          Cuéntanos cómo son ustedes
         </a>
         <a
           href="#catalogo"
           class="inline-flex items-center justify-center rounded-full border border-brand/25 px-7 py-3.5 text-base font-medium text-brand transition-colors hover:bg-brand-soft"
         >
-          Ver el catálogo
+          Ver modelos y precios
         </a>
       </div>
 
       <p class="mt-6 flex items-center gap-2 text-sm text-ink/50">
         <Heart size={13} color="#DD2530" />
-        Hecho a mano en {site.city} · Envíos a todo el país
+        Hecho a mano en {site.city} · Listos en 6 días hábiles · Envíos a todo el país
       </p>
     </div>
 

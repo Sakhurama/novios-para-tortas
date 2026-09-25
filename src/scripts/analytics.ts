@@ -22,6 +22,11 @@ function origen(link: HTMLAnchorElement): string {
   if (link.closest('[data-wa-fab]')) return 'boton-flotante';
   if (link.closest('header')) return 'navbar';
   if (link.closest('footer')) return 'footer';
+  // El visor ampliado vive dentro de <section id="galeria">, así que sin esta
+  // línea sus clics se mezclarían con los del grid. Interesa separarlos: mirar
+  // una foto en grande y luego pedirla es una intención muy distinta de pasar
+  // por encima de las miniaturas.
+  if (link.closest('[data-lightbox]')) return 'galeria-visor';
   return link.closest('section[id]')?.id ?? 'desconocido';
 }
 

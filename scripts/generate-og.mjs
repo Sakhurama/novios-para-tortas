@@ -43,7 +43,7 @@ const PAD_X = 78;
 const LOGO_W = 380;
 const LOGO_H = Math.round((226 / 592) * LOGO_W); // proporción real del logo
 
-const HEADLINE = ['El detalle que corona', 'el amor de tu boda'];
+const HEADLINE = ['Ustedes dos,', 'en miniatura,', 'encima de la torta'];
 const KICKER = 'Hecho a mano · 20 años · Envíos a toda Colombia';
 
 const HEADLINE_SIZE = 52;

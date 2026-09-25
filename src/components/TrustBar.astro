@@ -4,10 +4,19 @@ import Icon from './Icon.astro';
 // Cada pilar lleva su propio icono de línea (ver Icon.astro) en lugar de
 // repetir el corazón cuatro veces.
 const pillars = [
-  { icon: 'hand', title: '100% hecho a mano', desc: 'Cada figura, modelada pieza por pieza.' },
-  { icon: 'brush', title: 'Personalización total', desc: 'Se parecen a ustedes: traje, vestido, detalles.' },
-  { icon: 'package', title: 'Envíos a toda Colombia', desc: 'Empaque seguro que protege cada detalle.' },
-  { icon: 'rings', title: 'Miles de bodas felices', desc: 'Dos décadas coronando tortas de matrimonio.' },
+  { icon: 'hand', title: 'Hechos a mano', desc: 'En porcelanicrón, pieza por pieza, en nuestro taller.' },
+  // "Personalización total" es palabra de folleto. Lo que de verdad compra la
+  // clienta es el parecido, y el parecido se demuestra nombrando cosas.
+  { icon: 'brush', title: 'Se parecen a ustedes', desc: 'Su peinado, su vestido, el traje y hasta la mascota.' },
+  // "Empaque seguro" describe; "si algo pasa, lo resolvemos" compromete. La
+  // diferencia importa: el miedo a que la pieza llegue rota es lo que más
+  // frena la compra de algo frágil, hecho a mano y pagado por adelantado.
+  { icon: 'package', title: 'Envíos a toda Colombia', desc: 'Empacamos con mucho cuidado y amor.' },
+  // Antes decía "Miles de bodas felices": una cifra que nadie puede comprobar
+  // y que no le pide nada al visitante. El plazo sí: le da una razón para
+  // escribir hoy en lugar de dejarlo para después, que es donde se pierden
+  // casi todos los pedidos de algo con fecha límite.
+  { icon: 'aprobado', title: 'Listos en 6 días hábiles', desc: 'Escríbenos con tres semanas y aseguras tu fecha.' },
 ] as const;
 ---
 

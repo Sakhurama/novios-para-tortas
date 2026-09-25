@@ -1,23 +1,39 @@
 ---
 import { Image } from 'astro:assets';
-import { waLink } from '../config';
+import { waLink, WHATSAPP_DATE_LINE } from '../config';
 import SectionTitle from './SectionTitle.astro';
-import { formatCOP, hasPrices, products } from '../data/products';
-
-// El "desde" no puede leerse como precio cerrado: cada figura se cotiza según
-// lo que se personalice. La aclaración solo aparece si hay precios cargados.
-const subtitle = hasPrices
-  ? 'Cada modelo se elabora a mano y se puede personalizar. Los precios son de partida: el valor final depende de la personalización que elijas.'
-  : 'Cada modelo se elabora a mano y se puede personalizar. Elige el que más te enamore y cotízalo por WhatsApp sin compromiso.';
+import { formatCOP, hasPrice, PRICE_FROM, priceExtrasText, products } from '../data/products';
 ---
 
 <section id="catalogo" class="bg-white">
   <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
     <SectionTitle
       eyebrow="Nuestro catálogo"
-      title="Encuentra <span class='italic'>los novios</span> perfectos"
-      subtitle={subtitle}
+      title="Tres formas de <span class='italic'>empezar</span>"
+      subtitle="Inspírate y elige el que más encaje con sus personalidades. Desde aquí cambiamos lo que haga falta hasta que sean ustedes."
     />
+
+    {/* El precio, una sola vez y antes de las tarjetas.
+        Es lo primero que quiere saber quien llega, y callarlo no lo hace
+        parecer exclusivo: lo hace parecer caro, y mucha gente se va sin
+        preguntar. Va acompañado de lo que suma para que el "desde" no se lea
+        como precio cerrado y, de paso, para enseñar que la pieza puede crecer
+        —que es exactamente lo que sube el pedido—. */}
+    {hasPrice && PRICE_FROM !== null && (
+      <div
+        data-reveal
+        class="mx-auto mt-10 max-w-xl rounded-2xl border border-brand-soft bg-cream px-6 py-6 text-center"
+      >
+        <p class="font-serif text-3xl leading-tight text-brand sm:text-4xl">
+          Desde <strong class="font-semibold">{formatCOP(PRICE_FROM)}</strong> la pareja
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-ink/60">
+          Este es el precio de los novios. De ahí en adelante, cada añadido —{priceExtrasText}…—
+          suma según el detalle que lleve. Cuéntanos qué quieres que aparezca y te
+          decimos cuánto vale.
+        </p>
+      </div>
+    )}
 
     <div data-reveal-group class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -36,17 +52,12 @@ const subtitle = hasPrices
             </div>
 
             <div class="flex flex-1 flex-col p-6">
-              <div class="flex items-baseline justify-between gap-3">
-                <h3 class="font-serif text-2xl font-semibold text-brand">{p.name}</h3>
-                {p.priceFrom !== null && (
-                  <span class="shrink-0 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold whitespace-nowrap text-brand">
-                    Desde {formatCOP(p.priceFrom)}
-                  </span>
-                )}
-              </div>
+              <h3 class="font-serif text-2xl font-semibold text-brand">{p.name}</h3>
               <p class="mt-2 flex-1 text-sm leading-relaxed text-ink/60">{p.desc}</p>
               <a
-                href={waLink(`¡Hola! Me interesan los "${p.name}". ¿Me ayudan a cotizarlos? 💍`)}
+                href={waLink(
+                  `¡Hola! Me interesan los "${p.name}" que vi en la página web. ¿Me ayudan a cotizarlos? 💍${WHATSAPP_DATE_LINE}`
+                )}
                 target="_blank"
                 rel="noopener"
                 class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-accent"

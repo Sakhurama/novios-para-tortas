@@ -1,6 +1,7 @@
 ---
-import { navLinks, site, waLink } from '../config';
+import { isRealProfile, navLinks, site, waLink } from '../config';
 import Heart from './Heart.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -21,9 +22,9 @@ const year = new Date().getFullYear();
           />
         </div>
         <p class="mt-4 max-w-sm text-sm leading-relaxed text-ink/60">
-          {site.yearsInMarket} años creando a mano las figuras que coronan las tortas de
-          matrimonio, desde nuestro taller en {site.city} para toda Colombia. Un recuerdo
-          hecho con amor para tu día más especial.
+          Llevamos {site.yearsInMarket} años modelando a mano los novios que van encima
+          de la torta, desde nuestro taller en {site.city} para toda Colombia. Uno por
+          uno, parecidos a quienes se casan.
         </p>
       </div>
 
@@ -49,15 +50,24 @@ const year = new Date().getFullYear();
         <ul class="mt-4 space-y-2 text-sm text-ink/60">
           <li>
             <a href={waLink()} target="_blank" rel="noopener" class="inline-flex items-center gap-2 transition-colors hover:text-brand">
-              <Heart size={13} color="#DD2530" /> WhatsApp
+              <WhatsAppIcon size={14} color="#25D366" /> WhatsApp
             </a>
           </li>
-          <li>
-            <a href={site.instagram} target="_blank" rel="noopener" class="transition-colors hover:text-brand">Instagram</a>
-          </li>
-          <li>
-            <a href={site.facebook} target="_blank" rel="noopener" class="transition-colors hover:text-brand">Facebook</a>
-          </li>
+          {/* Solo si apuntan a un perfil de verdad. Un enlace a la portada de
+              Instagram saca de la página a alguien que estaba a punto de
+              escribir y lo deja en un sitio que no habla del negocio: es peor
+              que no tener enlace. Misma comprobación que usa el sameAs del
+              esquema (ver isRealProfile en config.ts). */}
+          {isRealProfile(site.instagram) && (
+            <li>
+              <a href={site.instagram} target="_blank" rel="noopener" class="transition-colors hover:text-brand">Instagram</a>
+            </li>
+          )}
+          {isRealProfile(site.facebook) && (
+            <li>
+              <a href={site.facebook} target="_blank" rel="noopener" class="transition-colors hover:text-brand">Facebook</a>
+            </li>
+          )}
         </ul>
       </div>
     </div>

@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import { site } from '../config';
 import Heart from './Heart.astro';
 import SectionTitle from './SectionTitle.astro';
 import taller from '../assets/story/taller.jpg';
@@ -27,25 +26,44 @@ import taller from '../assets/story/taller.jpg';
 
     <!-- Texto -->
     <div class="order-1 lg:order-2">
+      {/* Esta sección es el único sitio de la web donde habla una persona y no
+          "el taller". Por eso va en primera persona y con nombres: un "somos
+          una familia que hace del amor su oficio" lo puede firmar cualquiera,
+          y "mi mamá modelaba músculos y huesos para universidades" no lo puede
+          firmar nadie más.
+
+          Lo de los modelos anatómicos es el corazón del texto y no un adorno:
+          demuestra la destreza en vez de afirmarla, que es justo lo que la
+          clienta necesita creer antes de mandar un anticipo. Decir "somos muy
+          detallistas" no convence a nadie; decir que las mismas manos modelan
+          huesos para una facultad, sí. */}
       <SectionTitle
         align="left"
         eyebrow="Nuestra historia"
-        title="Una familia que hace <span class='italic'>del amor</span> su oficio"
+        title="Somos una empresa <span class='italic'>Familiar</span>"
       />
-      <div data-reveal-group class="mt-6 space-y-4 text-lg leading-relaxed text-ink/70">
+      <div data-reveal-group class="mt-6 space-y-4 text-lg leading-relaxed text-ink/80">
         <p>
-          Hace más de <strong class="font-semibold text-brand">{site.yearsInMarket} años</strong> comenzamos con
-          algo muy simple: convertir el amor de otras personas en pequeñas figuras
-          hechas a mano. Lo que nació en casa se transformó en una tradición familiar.
+          Mi mamá empezó a modelar porcelanicrón como pasatiempo por allá en el
+          <strong class="font-semibold text-brand"> 2002</strong>, cuando yo aún no había
+          nacido, luego por cosas de la vida ese pasatiempo se convirtió en el sustento
+          principal de nuestra familia.
         </p>
         <p>
-          Desde entonces hemos coronado <strong class="font-semibold text-brand">miles de tortas</strong> de
-          matrimonio en toda Colombia. Cada novio que sale de nuestras manos lleva la
-          misma dedicación del primer día.
+          Con toda confianza puedo decir que ya ha hecho
+          <strong class="font-semibold text-brand"> más de 1000 novios para tortas</strong>.
+          Y no solo eso, es tan experta que también ha hecho trabajos de anatomía para
+          universidades y proyectos de grado de Bellas Artes, entre otras miles de figuras
+          que ya perdí la cuenta. Aunque, de todo lo que ha hecho, nada le gusta tanto como
+          darle vida a las parejas que sellarán su propia historia de amor.
+        </p>
+        <p>
+          Ten la confianza de que tus novios están en las mismas manos que le han dado forma
+          a más de mil historias de amor como la tuya.
         </p>
         <p class="flex items-center gap-2 text-base text-ink/60">
           <Heart size={16} color="#DD2530" beat />
-          Gracias por dejarnos ser parte de tu historia de amor.
+          Gracias por dejarnos hacer la figura que se queda cuando la torta ya no está.
         </p>
       </div>
     </div>

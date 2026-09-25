@@ -26,16 +26,27 @@ npm run dev      # http://localhost:4321
 
 Hay valores marcados con `⚠️ TODO` que deben reemplazarse por los reales:
 
-| Qué                  | Dónde                                             |
-| -------------------- | ------------------------------------------------- |
-| Ciudad del taller    | `src/config.ts` → `site.city`                     |
-| Instagram y Facebook | `src/config.ts` → `site.instagram` / `.facebook`  |
-| Precios "desde"      | `src/data/products.ts` → `priceFrom`              |
-| Google Analytics     | `.env` → `PUBLIC_GA_ID` (ver `.env.example`)      |
+| Qué                  | Dónde                                        |
+| -------------------- | -------------------------------------------- |
+| Política si la pieza llega rota | `src/data/faqs.ts` → FAQ "¿Y si la figura llega rota?" |
+| Medios de pago       | `src/data/faqs.ts` → FAQ "¿Cómo cotizo y realizo el pago?" |
+| Google Analytics     | `.env` → `PUBLIC_GA_ID` (ver `.env.example`) |
 
-Mientras estén sin poner, el sitio funciona igual: los precios no se pintan, las
-redes no se declaran en los datos estructurados y la analítica no se inyecta.
-Nada de esto rompe el build.
+Los dos primeros son texto que ya está escrito en borrador: la web funciona,
+pero la respuesta de la pieza rota es la que más pesa a la hora de cerrar una
+venta y debe decir la política de verdad. Sin `PUBLIC_GA_ID` la analítica
+simplemente no se inyecta y el build no se rompe.
+
+### Precios
+
+El taller cobra por pieza, no por categoría: la pareja básica vale
+`PRICE_FROM` (`src/data/products.ts`) y cada añadido —un hijo, una mascota, un
+auto— suma encima. Por eso el precio se anuncia una sola vez encima de las
+tarjetas, y no repetido en las tres.
+
+Esa constante es la única fuente: de ella salen el anuncio del catálogo, la FAQ
+del precio y el `AggregateOffer` del JSON-LD. Si se pone a `null`, los tres
+desaparecen solos y el sitio sigue compilando.
 
 ## Despliegue (Cloudflare Workers Builds)
 

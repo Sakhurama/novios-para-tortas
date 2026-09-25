@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
-import { site, WHATSAPP_E164, WHATSAPP_NUMBER } from '../config';
+import { site, socialProfiles, WHATSAPP_E164, WHATSAPP_NUMBER } from '../config';
 import { faqs } from '../data/faqs';
-import { hasPrices, products } from '../data/products';
+import { formatCOP, hasPrice, PRICE_FROM, products } from '../data/products';
 import Analytics from '../components/Analytics.astro';
 
 interface Props {
@@ -12,9 +12,16 @@ interface Props {
   noindex?: boolean;
 }
 
+// La marca va al final y la búsqueda al principio: nadie teclea "Novios para
+// Tortas" —todavía no saben que existe—, teclean lo que quieren comprar.
+// La descripción lleva el precio porque es lo que más hace clicar en unos
+// resultados donde ningún competidor lo enseña; sale de PRICE_FROM para que no
+// se quede desfasado el día que cambie.
+const precioMeta = hasPrice && PRICE_FROM !== null ? ` Desde ${formatCOP(PRICE_FROM)} la pareja.` : '';
+
 const {
-  title = `${site.name} · Novios artesanales para torta de matrimonio en Colombia`,
-  description = `Fabricamos a mano las figuras de novios que coronan tu torta de matrimonio. Taller en ${site.city} con ${site.yearsInMarket} años de tradición familiar y envíos a toda Colombia. Cotiza por WhatsApp.`,
+  title = `Novios para torta de matrimonio hechos a mano en Colombia | ${site.name}`,
+  description = `Figuras de novios modeladas a mano en porcelanicrón, parecidas a ustedes: el peinado, el vestido, el traje y hasta el perro.${precioMeta} Taller en ${site.city} con ${site.yearsInMarket} años y envíos a toda Colombia. Cotiza por WhatsApp.`,
   noindex = false,
 } = Astro.props;
 
@@ -27,13 +34,11 @@ const ogImage = new URL('/og-2.jpg', Astro.site);
 const ogImageAlt = `${site.name} — novios hechos a mano para torta de matrimonio`;
 
 // --- Datos estructurados ---------------------------------------------------
-// `sameAs` solo acepta perfiles reales. Mientras las redes sigan siendo los
-// placeholders (`https://instagram.com/` a secas), declararlas sería decirle a
-// Google que la marca es la portada de Instagram. Un perfil de verdad siempre
-// tiene algo después del dominio.
-const socialProfiles = [site.instagram, site.facebook].filter(
-  (url) => new URL(url).pathname.length > 1
-);
+// `sameAs` solo acepta perfiles reales, y de eso se encarga `socialProfiles`
+// en config.ts: mientras las redes sigan siendo los placeholders
+// (`https://instagram.com/` a secas), declararlas sería decirle a Google que la
+// marca es la portada de Instagram. La comprobación se mudó allí porque ahora
+// la comparten este esquema, el pie y la galería.
 
 // Se usa Organization y no LocalBusiness: el negocio es un taller sin tienda ni
 // dirección de calle pública, y un LocalBusiness sin `address` completa genera
@@ -51,7 +56,7 @@ const organizationSchema = {
   image: ogImage.href,
   description,
   slogan: site.tagline,
-  foundingDate: String(new Date().getFullYear() - site.yearsInMarket),
+  foundingDate: String(site.foundedYear),
   address: {
     '@type': 'PostalAddress',
     addressLocality: site.city,
@@ -89,7 +94,7 @@ const faqSchema = {
 // El catálogo solo se declara cuando hay precios reales: un `Product` sin
 // `offers` genera avisos de campo faltante en el test de Google. En cuanto se
 // carguen los precios en src/data/products.ts, esto se activa solo.
-const catalogSchema = hasPrices
+const catalogSchema = hasPrice && PRICE_FROM !== null
   ? {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
@@ -103,14 +108,16 @@ const catalogSchema = hasPrices
           description: p.desc,
           image: new URL(p.image.src, Astro.site).href,
           brand: { '@type': 'Brand', name: site.name },
-          ...(p.priceFrom !== null && {
-            offers: {
-              '@type': 'AggregateOffer',
-              priceCurrency: 'COP',
-              lowPrice: p.priceFrom,
-              availability: 'https://schema.org/InStock',
-            },
-          }),
+          // Los tres modelos parten de la misma pareja básica, así que
+          // comparten `lowPrice`. Es `AggregateOffer` y no `Offer` justamente
+          // porque no hay precio cerrado: el valor final depende de lo que se
+          // le añada, y eso es lo que la página dice en voz alta.
+          offers: {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'COP',
+            lowPrice: PRICE_FROM,
+            availability: 'https://schema.org/InStock',
+          },
         },
       })),
     }

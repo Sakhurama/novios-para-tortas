@@ -1,6 +1,7 @@
 ---
 import { waLink } from '../config';
 import Heart from './Heart.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 ---
 
 <section class="relative overflow-hidden bg-brand">
@@ -16,12 +17,15 @@ import Heart from './Heart.astro';
       escalonado, que también usa `animation`, se la comería. */}
   <div data-reveal class="relative mx-auto max-w-3xl px-5 py-24 text-center lg:px-8">
     <Heart size={34} color="#DD2530" beat class="mx-auto" />
+    {/* El argumento más fuerte del negocio, que estaba escondido en una FAQ:
+        la torta desaparece esa noche y la figura no. Dicho en dos frases
+        cortas pega mucho más que "el final feliz que merece". */}
     <h2 class="mt-6 font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
-      Que tu torta tenga <span class="italic">el final feliz</span> que merece
+      La torta se acaba esa noche. <span class="italic">Ellos se quedan.</span>
     </h2>
     <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
-      Escríbenos hoy y creemos juntos el detalle que coronará tu gran día.
-      Sin compromiso y con toda la atención que tu boda merece.
+      Cuéntanos cómo son ustedes y te decimos cuánto es el precio. Sin compromiso:
+      aquí nadie te va a insistir.
     </p>
     <a
       href={waLink()}
@@ -29,8 +33,8 @@ import Heart from './Heart.astro';
       rel="noopener"
       class="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-brand shadow-lg transition-all hover:bg-cream hover:shadow-xl"
     >
-      <Heart size={17} color="#DD2530" />
-      Cotiza por WhatsApp
+      <WhatsAppIcon size={19} color="#25D366" />
+      ¡Quiero cotizar!
     </a>
   </div>
 </section>

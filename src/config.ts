@@ -3,19 +3,30 @@
 //  Reemplaza los valores placeholder por los datos reales.
 // ------------------------------------------------------------------
 
+/**
+ * Año en que Amparo empezó a modelar porcelanicrón.
+ *
+ * Se guarda el año y no la cifra de años a propósito: "20" es un dato que
+ * caduca en silencio —el 1 de enero que viene deja de ser verdad y nadie se
+ * entera—, mientras que 2006 es un hecho. De aquí salen tanto los "20 años"
+ * que se leen en la web como el foundingDate del esquema.
+ */
+export const FOUNDED_YEAR = 2006;
+
 /** Datos de la marca / negocio */
 export const site = {
   name: "Novios para Tortas",
-  tagline: "Decoraciones hechas a mano para la torta de tus sueños",
-  yearsInMarket: 20,
+  tagline: "Ustedes dos, en miniatura, encima de la torta",
+  foundedYear: FOUNDED_YEAR,
+  yearsInMarket: new Date().getFullYear() - FOUNDED_YEAR,
   // Ciudad base del taller. Alimenta el Hero, el footer y el schema de dirección
   // (addressLocality) del Layout: es una de las señales que le dicen a Google que
   // el negocio es de Colombia, no de otro país hispanohablante.
   city: "Bucaramanga",
   region: "Santander", // departamento — va en addressRegion del schema
   regionCode: "CO-SAN", // ISO 3166-2, para el meta geo.region
-  instagram: "https://instagram.com/", // ⚠️ TODO: perfil real
-  facebook: "https://facebook.com/", // ⚠️ TODO: perfil real
+  instagram: "https://www.instagram.com/noviosparatortas",
+  facebook: "https://www.facebook.com/Noviosenporcelanicron.com.co",
 } as const;
 
 /**
@@ -75,8 +86,29 @@ export const galleryImageAlts: Record<string, string> = {
     "Novia con velo de tul dando un beso en la mejilla al novio, que viste traje azul y corbata celeste",
 };
 
+/**
+ * Nombre corto de cada foto de la galería, tal y como lo diría una persona.
+ * Se usa para el mensaje de WhatsApp del visor ampliado: el cliente pulsa
+ * "Quiero unos así" y al taller le llega un chat diciendo exactamente de qué
+ * pieza habla, sin tener que describirla ni mandar captura.
+ *
+ * Tiene que encajar detrás de "Vi en la página web la foto de…", así que va en
+ * minúscula y sin punto final.
+ */
+export const galleryImageNames: Record<string, string> = {
+  "01-hilo-rojo.jpg": "los novios envueltos en el hilo rojo",
+  "02-besos.jpg": "los besos por toda la cara del novio",
+  "03-familia.jpg": "la familia completa sobre la torta",
+  "04-up-globos.jpg": "los novios estilo Up con la casa de globos",
+  "05-si-acepta.jpg": "los novios del «Sí, acepta»",
+  "06-el-acepta.jpg": "los novios del «Él… acepta»",
+  "07-besito.jpg": "la novia dándole un besito al novio",
+};
+
 export const GALLERY_ALT_FALLBACK =
   "Decoración artesanal de novios sobre una torta de matrimonio";
+
+export const GALLERY_NAME_FALLBACK = "esta pieza de la galería";
 
 export const HERO_ALT_FALLBACK =
   "Figuras artesanales de novios sobre una torta de matrimonio";
@@ -97,9 +129,49 @@ export const WHATSAPP_NUMBER = "573005438227";
  */
 export const WHATSAPP_E164 = `+${WHATSAPP_NUMBER}`;
 
-/** Mensaje por defecto al abrir el chat */
+/**
+ * Cierre común de los mensajes de WhatsApp: la pregunta por la fecha.
+ *
+ * Va suelto para escribirla una sola vez, porque la repiten todos los CTA.
+ * El salto de línea sobrevive al viaje: waLink() lo codifica como %0A, que es
+ * lo que wa.me espera.
+ */
+export const WHATSAPP_DATE_LINE = "\nMi boda es el:";
+
+/**
+ * Mensaje por defecto al abrir el chat.
+ *
+ * Lleva un único campo abierto a propósito. Una plantilla con cuatro huecos
+ * (fecha, ciudad, modelo, número de figuras) se lee como un formulario:
+ * intimida y mucha gente acaba mandándola en blanco. Con uno solo se rellena,
+ * y la fecha es el dato que decide si el pedido cabe en el calendario, así que
+ * es el que tiene que ir primero.
+ */
 export const WHATSAPP_DEFAULT_MESSAGE =
-  "¡Hola! Vengo desde la página web y quiero cotizar unos novios para mi torta 💍";
+  `¡Hola! Vengo de la página web y quiero cotizar unos novios para mi torta 💍${WHATSAPP_DATE_LINE}`;
+
+/**
+ * Mensaje del visor ampliado de la galería. El nombre sale de
+ * `galleryImageNames`.
+ */
+export function galleryMessage(name: string): string {
+  return `¡Hola! Vi en la página web la foto de ${name} y me encantó 💍 ¿Me pueden hacer algo parecido?${WHATSAPP_DATE_LINE}`;
+}
+
+/**
+ * ¿El enlace apunta a un perfil de verdad y no a la portada de la red?
+ * `https://instagram.com/` a secas es el placeholder, y mandar ahí a alguien
+ * que está a punto de comprar es peor que no enlazar nada.
+ */
+export function isRealProfile(url: string): boolean {
+  return new URL(url).pathname.length > 1;
+}
+
+/** Perfiles sociales reales. Vacío mientras sigan siendo los placeholders. */
+export const socialProfiles = [site.instagram, site.facebook].filter(isRealProfile);
+
+/** ¿Podemos usar Instagram como prueba social visible? */
+export const hasInstagram = isRealProfile(site.instagram);
 
 /**
  * Construye un enlace de WhatsApp (wa.me) con un mensaje predefinido.

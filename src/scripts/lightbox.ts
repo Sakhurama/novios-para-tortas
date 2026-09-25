@@ -11,6 +11,12 @@
 //   [data-lightbox-stage]    el contenedor de las imágenes
 //   [data-lightbox-prev/next/close]  controles
 //   [data-lightbox-counter]  "3 / 7"
+//   [data-lightbox-cta]      enlace de WhatsApp; se reapunta a cada foto
+//
+// El texto del mensaje no vive aquí: cada [data-lightbox-slide] trae el enlace
+// ya montado en su `data-wa` (ver Gallery.astro y galleryMessage() en
+// config.ts). Este script solo copia el de la foto activa, así que se puede
+// cambiar lo que dice el chat sin tocar una línea de JavaScript.
 
 export function initLightbox(rootSelector: string) {
   const root = document.querySelector<HTMLElement>(rootSelector);
@@ -20,6 +26,7 @@ export function initLightbox(rootSelector: string) {
   const openers = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
   const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-lightbox-slide]'));
   const counter = root.querySelector<HTMLElement>('[data-lightbox-counter]');
+  const cta = root.querySelector<HTMLAnchorElement>('[data-lightbox-cta]');
 
   // Sin <dialog> el navegador no ejecuta showModal: mejor dejar las miniaturas
   // como están que dar un botón que no hace nada.
@@ -34,6 +41,12 @@ export function initLightbox(rootSelector: string) {
     index = (i + slides.length) % slides.length;
     slides.forEach((slide, n) => slide.classList.toggle('is-active', n === index));
     if (counter) counter.textContent = `${index + 1} / ${slides.length}`;
+
+    // El CTA tiene que hablar de la foto que se está viendo, no de la que se
+    // abrió. Si la diapositiva no trajera enlace, se deja el que ya tenía
+    // puesto el servidor antes que dejar un botón que no lleva a ningún sitio.
+    const wa = slides[index].dataset.wa;
+    if (cta && wa) cta.href = wa;
   }
 
   openers.forEach((button, i) => {
