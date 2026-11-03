@@ -86,29 +86,8 @@ export const galleryImageAlts: Record<string, string> = {
     "Novia con velo de tul dando un beso en la mejilla al novio, que viste traje azul y corbata celeste",
 };
 
-/**
- * Nombre corto de cada foto de la galería, tal y como lo diría una persona.
- * Se usa para el mensaje de WhatsApp del visor ampliado: el cliente pulsa
- * "Quiero unos así" y al taller le llega un chat diciendo exactamente de qué
- * pieza habla, sin tener que describirla ni mandar captura.
- *
- * Tiene que encajar detrás de "Vi en la página web la foto de…", así que va en
- * minúscula y sin punto final.
- */
-export const galleryImageNames: Record<string, string> = {
-  "01-hilo-rojo.jpg": "los novios envueltos en el hilo rojo",
-  "02-besos.jpg": "los besos por toda la cara del novio",
-  "03-familia.jpg": "la familia completa sobre la torta",
-  "04-up-globos.jpg": "los novios estilo Up con la casa de globos",
-  "05-si-acepta.jpg": "los novios del «Sí, acepta»",
-  "06-el-acepta.jpg": "los novios del «Él… acepta»",
-  "07-besito.jpg": "la novia dándole un besito al novio",
-};
-
 export const GALLERY_ALT_FALLBACK =
   "Decoración artesanal de novios sobre una torta de matrimonio";
-
-export const GALLERY_NAME_FALLBACK = "esta pieza de la galería";
 
 export const HERO_ALT_FALLBACK =
   "Figuras artesanales de novios sobre una torta de matrimonio";
@@ -130,35 +109,6 @@ export const WHATSAPP_NUMBER = "573005438227";
 export const WHATSAPP_E164 = `+${WHATSAPP_NUMBER}`;
 
 /**
- * Cierre común de los mensajes de WhatsApp: la pregunta por la fecha.
- *
- * Va suelto para escribirla una sola vez, porque la repiten todos los CTA.
- * El salto de línea sobrevive al viaje: waLink() lo codifica como %0A, que es
- * lo que wa.me espera.
- */
-export const WHATSAPP_DATE_LINE = "\nMi boda es el:";
-
-/**
- * Mensaje por defecto al abrir el chat.
- *
- * Lleva un único campo abierto a propósito. Una plantilla con cuatro huecos
- * (fecha, ciudad, modelo, número de figuras) se lee como un formulario:
- * intimida y mucha gente acaba mandándola en blanco. Con uno solo se rellena,
- * y la fecha es el dato que decide si el pedido cabe en el calendario, así que
- * es el que tiene que ir primero.
- */
-export const WHATSAPP_DEFAULT_MESSAGE =
-  `¡Hola! Vengo de la página web y quiero cotizar unos novios para mi torta 💍${WHATSAPP_DATE_LINE}`;
-
-/**
- * Mensaje del visor ampliado de la galería. El nombre sale de
- * `galleryImageNames`.
- */
-export function galleryMessage(name: string): string {
-  return `¡Hola! Vi en la página web la foto de ${name} y me encantó 💍 ¿Me pueden hacer algo parecido?${WHATSAPP_DATE_LINE}`;
-}
-
-/**
  * ¿El enlace apunta a un perfil de verdad y no a la portada de la red?
  * `https://instagram.com/` a secas es el placeholder, y mandar ahí a alguien
  * que está a punto de comprar es peor que no enlazar nada.
@@ -174,9 +124,9 @@ export const socialProfiles = [site.instagram, site.facebook].filter(isRealProfi
 export const hasInstagram = isRealProfile(site.instagram);
 
 /**
- * Construye un enlace de WhatsApp (wa.me) con un mensaje predefinido.
- * @param message Texto que aparecerá escrito en el chat del cliente.
+ * Construye un enlace de WhatsApp (wa.me). El chat se abre en blanco: el
+ * mensaje lo escribe el cliente.
  */
-export function waLink(message: string = WHATSAPP_DEFAULT_MESSAGE): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+export function waLink(): string {
+  return `https://wa.me/${WHATSAPP_NUMBER}`;
 }

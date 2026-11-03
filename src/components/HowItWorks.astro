@@ -1,5 +1,5 @@
 ---
-import { waLink, WHATSAPP_DATE_LINE } from '../config';
+import { waLink } from '../config';
 import Heart from './Heart.astro';
 import Icon from './Icon.astro';
 import WhatsAppIcon from './WhatsAppIcon.astro';
@@ -79,7 +79,7 @@ const steps = [
 
     <div data-reveal class="mt-14 text-center">
       <a
-        href={waLink(`¡Hola! Ya vi cómo funciona y quiero empezar mi pedido de novios para torta 💍${WHATSAPP_DATE_LINE}`)}
+        href={waLink()}
         target="_blank"
         rel="noopener"
         class="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-base font-medium text-white shadow-md transition-all hover:bg-brand-light hover:shadow-lg"
